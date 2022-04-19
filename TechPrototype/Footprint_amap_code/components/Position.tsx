@@ -17,6 +17,7 @@ export async function geolocationInit() {
 export function getCurrentPosition() {
     const p = new Promise(function (resolve, reject) {
         Geolocation.getCurrentPosition(position => {
+            console.log("SUCCESS 获取当前地理位置成功", position);
             resolve(position);
         });
     });
@@ -26,25 +27,27 @@ export function getCurrentPosition() {
 
 // 逆地理编码获取周围位置信息
 export const getAddress = (lng, lat) => {
-    fetch(
-        `https://restapi.amap.com/v3/geocode/regeo?key=beba67dedb3de25a4f91da96b33c62c0&extensions=all&location=${lng},${lat}`,
-        {
-            method: 'GET',
-        },
-    )
-        .then(response => response.json())
-        .then(result => {
-            console.log('SUCCESS 逆地理编码获取结果 ', result);
-        })
-        .catch(error => {
-            console.log('ERROR 逆地理编码获取错误 ', error);
-        });
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `https://restapi.amap.com/v3/geocode/regeo?key=beba67dedb3de25a4f91da96b33c62c0&extensions=all&location=${lng},${lat}`,
+            {
+                method: 'GET',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS 逆地理编码获取结果 ', result);
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR 逆地理编码获取错误 ', error);
+                reject(error);
+            });
+    });
 };
 
 // 根据起点终点进行步行路径规划
 export const getWalkingRoute = (ori_lng, ori_lat, des_lng, des_lat) => {
-    // let polylineRequest = {"polyline": null,}
-    // let polylineRequestString = encodeURI(JSON.stringify(polylineRequest))
     return new Promise(function (resolve, reject) {
         fetch(
             `https://restapi.amap.com/v5/direction/walking?key=beba67dedb3de25a4f91da96b33c62c0&origin=${ori_lng},${ori_lat}&destination=${des_lng},${des_lat}&show_fields=polyline`,
@@ -84,6 +87,55 @@ export const getDrivingRoute = (ori_lng, ori_lat, des_lng, des_lat, waypoints) =
             });
     });
 };
+
+// 关键字搜索周边地理位置
+export const searchAroundLocation = (lng, lat, keywords) => {
+    console.log("keywords:", keywords);
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `https://restapi.amap.com/v5/place/around?key=beba67dedb3de25a4f91da96b33c62c0&&location=${lng},${lat}&keywords=${keywords}`,
+            {
+                method: 'GET',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS 搜索周边地理位置获取结果 ', result);
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR 搜索周边地理位置错误 ', error);
+                reject(error);
+            });
+    });
+};
+
+
+
+
+// 搜索输入提示
+export const getSearchTips = (lng, lat, keywords) => {
+    console.log("keywords:", keywords);
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `https://restapi.amap.com/v3/assistant/inputtips?key=beba67dedb3de25a4f91da96b33c62c0&location=${lng},${lat}&keywords=${keywords}`,
+            {
+                method: 'GET',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS 搜索输入提示获取结果 ', result);
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR 搜索输入提示错误 ', error);
+                reject(error);
+            });
+    });
+};
+
+
 
 
 

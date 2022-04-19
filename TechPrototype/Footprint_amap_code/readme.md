@@ -10,6 +10,10 @@ https://github.com/qiuxiang/react-native-amap3d
 
 https://github.com/qiuxiang/react-native-amap-geolocation
 
+https://github.com/oblador/react-native-vector-icons
+
+https://github.com/mastermoo/react-native-action-button
+
 如若配置环境上遇到问题，可参考以上部分所需要的环境配置
 
 
