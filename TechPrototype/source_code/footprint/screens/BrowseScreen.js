@@ -48,13 +48,14 @@ const BrowseScreen = () =>{
                   <Card />
                   <Card />
               </Flex>
-              <Divider /> 
+              <Divider />
               <Box textAlign="center" height={0.08 * h}>
                 <Text color="gray.300" size="xl" ml="30%">
                   没有更多啦！w(ﾟДﾟ)w
                 </Text>
               </Box>
           </ScrollView>
+
       </View>);
 }
 
