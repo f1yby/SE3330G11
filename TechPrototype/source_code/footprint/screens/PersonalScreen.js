@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {
   Box,
   Image,
-  HStack,
-  Heading,
   AspectRatio,
   Stack,
   Center,
@@ -15,7 +13,8 @@ import {
   Flex,
   Pressable,
   Container,
-  ScrollView
+  ScrollView,
+  Divider
 } from 'native-base';
 import {Dimensions} from 'react-native';
 import Footer from '../components/Footer'
@@ -43,13 +42,14 @@ const Picdisplay=()=>{
 }
 
 const PersonalScreen=()=>{
+    const bottom = 0.1 * h;
     return (
-        <View>
+        <View >
             <Profile />
-            <ScrollView width="100%" 
+            <ScrollView width="100%"  mb={0.1 * h} height={h * 0.5}
             _contentContainerStyle={{
                 mt: "1%",
-                mb: "4",
+                mb: bottom,
                 mr:"0",
                 ml:"0",
              }}>
@@ -63,10 +63,10 @@ const PersonalScreen=()=>{
             <Picdisplay />
             <Picdisplay />
             <Picdisplay /> 
-            <Picdisplay /> 
+            <Picdisplay />
              </Flex>
           </ScrollView>
-          <Footer/>
+          {/* <Footer/> */}
           </View>
         //   {/* <Footer/> */}
     );

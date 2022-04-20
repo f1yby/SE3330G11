@@ -11,10 +11,12 @@ export default function Footer() {
     <Box
       // flex={1}
       bg="white"
+      // bg="primary.200"
       safeAreaTop
       width="100%"
       height= "10%"
-      mb="0"
+      position="absolute"
+      bottom="0"
       alignSelf="center"
       borderColor="gray.100"
       borderTopWidth="3"

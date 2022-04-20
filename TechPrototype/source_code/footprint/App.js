@@ -14,12 +14,15 @@ import {
 } from "native-base";
 import Footer from "./components/Footer";
 import Header_FootPrint from "./components/Header";
-import Profile from "./components/Profile";
 import PersonalScreen from "./screens/PersonalScreen";
-import Message from "./components/Message";
+import MessageScreen from "./screens/MessageScreen";
+import HistoryScreen from "./screens/HistoryScreen";
 import BrowseScreen from "./screens/BrowseScreen";
+import Login from "./components/Login";
 import DetailScreen from "./screens/DetailScreen";
+import RegisterForm from "./components/Register";
 import { Platform } from "react-native";
+import HomeScreen from "./screens/HomeScreen";
 
 // Define the config
 const config = {
@@ -33,10 +36,14 @@ export const theme = extendTheme({ config });
 export default function App() {
   return (
     <NativeBaseProvider>
-      {/* <Header_FootPrint /> */}
-      {/* <Profile /> */}
-      <Message />
-      {/* <Footer /> */}
+        {/* <DetailScreen/> */}
+        {/* <MessageScreen /> */}
+        {/* <HistoryScreen /> */}
+        {/* <BrowseScreen />
+       <Footer /> */}
+       {/* <HomeScreen /> */}
+       {/* <Login /> */}
+       {/* <RegisterForm /> */}
     </NativeBaseProvider>
   );
 }

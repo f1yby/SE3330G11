@@ -8,6 +8,9 @@ import {
   Spacer,
   Heading,
   NativeBaseProvider,
+  Avatar,
+  Center,
+  Icon
 } from 'native-base';
 import {
   Dimensions,
@@ -15,52 +18,57 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import FontAwesome from "react-native-vector-icons/FontAwesome"
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
 class Header_FootPrint extends Component {
   render() {
+    const heightHeader = 0.1 * h;
     return (
-        <NativeBaseProvider>
-      <Container height={h * 0.1} width="100%" borderColor="gray.100" borderBottomWidth="3">
-        <HStack space={3} alignItems="center" justifyContent="space-between" mt="4%">
-          <Image
+      <Box width={w}  mt="2%"  height={this.heightHeader} borderColor="gray.100" borderBottomWidth="3">
+        <HStack space={3} alignItems="center" justifyContent="space-between"  mt="10%" mr="10%" >
+          <Avatar
             ml="5%"
-            source={require('../image/protrait.jpeg')}
+            source={{
+              uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+            }}
             alt="image"
             size={w * 0.1}
-            resizeMode={'contain'}
-            borderRadius="300px"
           />
-          <Image
-            ml="25%"
-            source={require('../image/LogoC.png')}
-            alt="image"
-            size={w * 0.08}
-            resizeMode={'contain'}
-          />
-          <Heading
-            color="primary.400"
-            bold
-            ml="0"
-            textAlign="left"
-            width="40%"
-            fontSize="30px"
-          >
-            足迹
-          </Heading>
-          <Image
-            ml="5%"
+          <Center width={0.7 * w} direction="row">
+            <HStack>
+              <Image
+                source={require('../image/LogoC.png')}
+                alt="image"
+                size={w * 0.08}
+                resizeMode={'contain'}
+              />
+              <Heading
+                color="primary.400"
+                bold
+                textAlign="left"
+                width="30%"
+                fontSize="25px"
+              >
+                足迹
+              </Heading>
+            </HStack>
+          </Center>
+          {/* <Image
+            ml="-10%"
             source={require('../image/bell.png')}
             alt="image"
             size={w * 0.1}
             resizeMode={'contain'}
             borderRadius={h * 0.03}
-          />
+          /> */}
+          <Icon as={FontAwesome} name="bell" size={w * 0.07} color="gray.500" _dark={{
+                            color: "gray.700"
+                        }} margin="auto" />
         </HStack>
-      </Container>
-        </NativeBaseProvider>
+      </Box>
     );
   }
 }

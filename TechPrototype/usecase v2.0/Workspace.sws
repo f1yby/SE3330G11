@@ -4,7 +4,9 @@
 
 <Workspace>
 	<Local Expanded="Yes">
-		<Model Expanded="Yes" ID="{D1C17FCC-7770-42C5-AE33-F7CB7E982889}" Name="SE3330" Selected="Yes" Type="{18112060-1A4B-11D1-83D9-444553540000}" URL="SE3330.oom"/>
+		<Model Expanded="Yes" ID="{D1C17FCC-7770-42C5-AE33-F7CB7E982889}" Name="SE3330" Type="{18112060-1A4B-11D1-83D9-444553540000}" URL="SE3330.oom"/>
+		<Model Expanded="Yes" ID="{DCEDE02B-C620-45A0-912F-7DF57A9D47B1}" Loaded="No" Name="SE3330_design" Selected="Yes" Type="{18112060-1A4B-11D1-83D9-444553540000}" URL="/学习杂务/2022-spring/软件工程/技术迭代/SE3331_design.oom"/>
+		<Model Expanded="Yes" ID="{D1C17FCC-7770-42C5-AE33-F7CB7E982889}" Name="SE3330" Type="{18112060-1A4B-11D1-83D9-444553540000}" URL="/学习杂务/2022-spring/软件工程/用例建模/SE3330.oom"/>
 	</Local>
 	<BrowserModule Name="Repository"/>
 </Workspace>

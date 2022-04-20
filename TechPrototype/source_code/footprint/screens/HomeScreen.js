@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {
-  ScrollView,
   Text,
-  TouchableWithoutFeedback,
   View,
   ImageBackground,
   StyleSheet,
@@ -20,7 +18,7 @@ const height = Dimensions.get('window').height;
 // const {screenWidth, screenHeight} = Dimensions.get('screen');
 // let {width, height} = Dimensions.get('window');
 
-class WelcomeView extends Component {
+class HomeScreen extends Component {
   render() {
     return (
       <ImageBackground
@@ -81,7 +79,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     marginBottom: '30%',
     marginLeft: '2%',
-    fontFamily: 'Microsoft YaHei',
     fontWeight: 'bold',
     fontSize: 45,
   },
@@ -92,7 +89,6 @@ const styles = StyleSheet.create({
     height: '20%',
   },
   infoText: {
-    fontFamily: 'Microsoft YaHei',
     color: '#ffffff',
     marginRight: '5%',
     fontWeight: 'bold',
@@ -109,13 +105,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16,
-    fontFamily: 'Microsoft YaHei',
   },
   buttonText2: {
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16,
-    fontFamily: 'Microsoft YaHei',
     color: '#ffffff',
   },
   homeButton: {
@@ -123,11 +117,8 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     backgroundColor: '#ffffff',
     alignItems: 'center',
-    // position: 'margin',
     width: width * 0.8,
     height: height * 0.07,
-    // margin: 'auto';
-    // marginRight: '10%',
     justifyContent: 'center',
     marginLeft: '10%',
     marginTop: '10%',
@@ -139,11 +130,8 @@ const styles = StyleSheet.create({
     borderColor: '#ffffff',
     borderWidth: 5,
     alignItems: 'center',
-    // position: 'margin',
     width: width * 0.8,
     height: height * 0.07,
-    // margin: 'auto';
-    // marginRight: '10%',
     justifyContent: 'center',
     marginLeft: '10%',
     marginTop: '10%',
@@ -202,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeView;
+export default HomeScreen;

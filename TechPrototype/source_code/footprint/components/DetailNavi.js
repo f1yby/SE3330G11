@@ -45,8 +45,8 @@ const HeadPortrait=()=>{
 
 const DetailNavi = () =>{
     return (
-        <Box direction="row" justifyContent="space-around" w="100%">
-            <HStack alignItems="center" safeAreaBottom shadow={6} justifyContent="center">
+        <Box direction="row" justifyContent="space-around" w="100%" height={0.12 * h}>
+            <HStack alignItems="center" safeAreaBottom justifyContent="center">
                 <HeadPortrait/>
                 <HeadPortrait/>
                 <HeadPortrait/>

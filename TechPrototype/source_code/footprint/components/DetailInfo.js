@@ -30,21 +30,24 @@ const h = Dimensions.get('window').height;
 const DetailInfo = () => {
     const [liked, setliked] = React.useState(0);
     const [collected, setColleted] = React.useState(0);
-    return <Box alignItems="center">
-        <Box w="100%" rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
-        borderColor: "coolGray.600",
-        backgroundColor: "gray.700"
-      }} _web={{
-        shadow: 2,
-        borderWidth: 0
-      }} _light={{
-        backgroundColor: "gray.50"
-      }}>
-          <Box>
-            <AspectRatio w="100%" ratio={4 / 3}>
+    return <Box alignItems="center" h={h * 0.7}>
+        <Box width="100%"  overflow="hidden"   
+      //   _dark={{
+      //   borderColor: "coolGray.600",
+      //   backgroundColor: "gray.700"
+      // }} _web={{
+      //   shadow: 2,
+      //   borderWidth: 0
+      // }} _light={{
+      //   backgroundColor: "gray.50"
+      // }}
+      >
+          <Box width="100%" >
+            <AspectRatio width="100%" height={0.41 * h} justifyContent="center" >
               <Image source={{
               uri: "https://img.zcool.cn/community/01193959eeec64a801202b0c23804b.jpg@1280w_1l_2o_100sh.jpg"
-            }} alt="image" />
+            }} alt="image" 
+            resizeMode="cover"/>
             </AspectRatio>
             <Center bg="primary.300" _dark={{
             bg: "violet.400"
@@ -56,7 +59,7 @@ const DetailInfo = () => {
               PHOTOS
             </Center>
           </Box>
-          <Stack p="4" space={3}>
+          <Stack  p="5%"  space={3} height={0.3 * h}>
             <HStack space={2}  justifyContent="space-between">
             <Stack space={2}>
               <Heading size="md" ml="-1" bold>
