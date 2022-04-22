@@ -35,7 +35,8 @@ export default function App() {
         'browse': <BrowseScreen/>,
         'message': <MessageScreen/>,
         'history': <HistoryScreen/>,
-        'personal':<PersonalScreen/>
+        'personal':<PersonalScreen/>,
+        'detail':<DetailScreen/>
     }
 
 
