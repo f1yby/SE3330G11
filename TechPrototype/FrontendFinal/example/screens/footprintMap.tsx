@@ -17,7 +17,11 @@ import {
     getCurrentPosition,
     getWalkingRoute,
     getDrivingRoute,
-    searchAroundLocation, getSearchTips
+    searchAroundLocation,
+    getSearchTips,
+    addTrace,
+    addPoints
+
 } from "../components/Position";
 import {Geolocation} from "react-native-amap-geolocation";
 import {Picker} from "@react-native-picker/picker";
@@ -29,6 +33,8 @@ import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconF5 from 'react-native-vector-icons/FontAwesome5';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 
+const sid = 666058;  //service_id
+const tid = 519609448; //terminal_id  for LHQ;
 
 export default class extends React.Component {
 
@@ -56,8 +62,10 @@ export default class extends React.Component {
         searchTipsLocation: [],
 
         // 拍照打卡
-        photoMarkers:[],
-        imgs:[],
+        photoMarkers: [],
+        imgs: [],
+        traceNum: 0,
+        trid: [],
     };
     watchId?: number | null;
     search = React.createRef();
@@ -75,13 +83,13 @@ export default class extends React.Component {
         geolocationInit();
     }
 
-    sleep (time){
+    sleep(time) {
         return new Promise((resolve) => {
             setTimeout(resolve, time)
         })
     }
 
-    wait(){
+    wait() {
         console.log("start sleep");
         this.sleep(1000);
         console.log("sleep finished");
@@ -98,7 +106,7 @@ export default class extends React.Component {
             res => {
                 const photoMarkers = this.state.photoMarkers;
                 const photoMarker = {imgs: res.assets, location: this.state.location,};
-                this.setState({imgs: res.assets, photoMarkers:[...photoMarkers, photoMarker]});
+                this.setState({imgs: res.assets, photoMarkers: [...photoMarkers, photoMarker]});
             },
         );
     };
@@ -112,7 +120,7 @@ export default class extends React.Component {
             res => {
                 const photoMarkers = this.state.photoMarkers;
                 const photoMarker = {imgs: res.assets, location: this.state.location,};
-                this.setState({imgs: res.assets, photoMarkers:[...photoMarkers, photoMarker]});
+                this.setState({imgs: res.assets, photoMarkers: [...photoMarkers, photoMarker]});
             },
         );
     };
@@ -128,14 +136,14 @@ export default class extends React.Component {
                 const photoMarkers = this.state.photoMarkers;
                 const photoMarker = {imgs: res.assets, location: this.state.location,};
                 console.log(photoMarker);
-                this.setState({imgs: res.assets, photoMarkers:[...photoMarkers, photoMarker]});
+                this.setState({imgs: res.assets, photoMarkers: [...photoMarkers, photoMarker]});
             },
         );
     };
 
 
     // 地图类型选择
-    setMapType(value: MapType){
+    setMapType(value: MapType) {
         this.setState({mapType: value,});
     }
 
@@ -152,27 +160,46 @@ export default class extends React.Component {
         this.PhotoAlbumVideoActionSheet.show();
     }
 
-    handlePlanRouteActionSheetSelect(index){
-        if(index == 0) {this.planDrivingRoute(); return;}
-        if(index == 1) {this.planWalkingRoute(); return;}
-        if(index == 2) {return;}
+    handlePlanRouteActionSheetSelect(index) {
+        if (index == 0) {
+            this.planDrivingRoute();
+            return;
+        }
+        if (index == 1) {
+            this.planWalkingRoute();
+            return;
+        }
+        if (index == 2) {
+            return;
+        }
     }
 
-    handleMapTypeActionSheetSelect(index){
+    handleMapTypeActionSheetSelect(index) {
         let mapTypes = [MapType.Standard, MapType.Satellite, MapType.Navi, MapType.Night, MapType.Bus]
         this.setMapType(mapTypes[index]);
     }
 
-    handlePhotoAlbumVideoSheetSelect(index){
-        if(index == 0) {this.tackPhoto();; return;}  // 拍摄照片
-        if(index == 1) {this.addPhoto(); return;}  // 打开相册
-        if(index == 2) {this.addVideo();return;}  // 拍摄视频
-        if(index == 3) {return;}
+    handlePhotoAlbumVideoSheetSelect(index) {
+        if (index == 0) {
+            this.tackPhoto();
+            ;
+            return;
+        }  // 拍摄照片
+        if (index == 1) {
+            this.addPhoto();
+            return;
+        }  // 打开相册
+        if (index == 2) {
+            this.addVideo();
+            return;
+        }  // 拍摄视频
+        if (index == 3) {
+            return;
+        }
     }
 
 
-
-    handleSearchButtonPressed(){  // TODO: 搜索到之后干什么？
+    handleSearchButtonPressed() {  // TODO: 搜索到之后干什么？
         console.log('Search Button pressed');
         const location = this.state.location;
         const pois = searchAroundLocation(location.coords.longitude, location.coords.latitude, this.state.searchText)
@@ -183,10 +210,10 @@ export default class extends React.Component {
                 console.log('周边地点搜索失败');
             });
         this.search.unFocus();
-        this.setState({searchTipsText:[]});
+        this.setState({searchTipsText: []});
     }
 
-    handleSearchTipClicked(searchTip: string){
+    handleSearchTipClicked(searchTip: string) {
         console.log('Search Tip clicked ', searchTip);
         const markers = this.state.markers;
         const searchTipsText = this.state.searchTipsText;
@@ -194,23 +221,28 @@ export default class extends React.Component {
         const marker = this.convertPolylineStr2ArrJSON(searchTipLocation);
         //  TODO: 设置搜索框内为关键词 tip
         this.search.unFocus();
-        this.setState({searchText: searchTip, searchTipsText:[], searchTipsLocation:[],markers: [...markers, marker[0]]});
+        this.setState({
+            searchText: searchTip,
+            searchTipsText: [],
+            searchTipsLocation: [],
+            markers: [...markers, marker[0]]
+        });
     }
 
-    moveMapViewToLocation(lng, lat){
+    moveMapViewToLocation(lng, lat) {
 
     }
 
 
-    handleSearchTextChange(newSearchText: string){
+    handleSearchTextChange(newSearchText: string) {
         console.log('Search Text changed');
         const location = this.state.location;
-        if(location && newSearchText != ""){
+        if (location && newSearchText != "") {
             const pois = getSearchTips(location.coords.longitude, location.coords.latitude, newSearchText)
                 .then(res => {
                     console.log('搜索输入提示', res);
-                    const searchTipsText = res.tips.map((tip)=>(tip.name));
-                    const searchTipsLocation = res.tips.map((tip)=>(tip.location));
+                    const searchTipsText = res.tips.map((tip) => (tip.name));
+                    const searchTipsLocation = res.tips.map((tip) => (tip.location));
                     console.log(searchTipsText, searchTipsLocation);
                     this.setState({searchTipsText: searchTipsText, searchTipsLocation: searchTipsLocation});
                 })
@@ -218,7 +250,7 @@ export default class extends React.Component {
                     console.log('搜索输入提示失败');
                 });
         }
-        if(newSearchText == "") this.setState({searchTipsText: [], searchTipsLocation: []});
+        if (newSearchText == "") this.setState({searchTipsText: [], searchTipsLocation: []});
         this.setState({searchText: newSearchText,});
         console.log(newSearchText);
     }
@@ -237,7 +269,7 @@ export default class extends React.Component {
     //     );
     // };
 
-    updateLocationOnce(){
+    updateLocationOnce() {
         // 获取当前地理位置信息
         const pos = getCurrentPosition()
             .then(res => {
@@ -263,14 +295,13 @@ export default class extends React.Component {
             this.setState({footprintData: [],});
             return Geolocation.watchPosition(
                 position => {
-                    console.log('监听地理位置 ',position);
+                    console.log('监听地理位置 ', position);
                     const footprintData = this.state.footprintData;
                     this.setState({footprintData: [...footprintData, position],});
                     console.log(this.state.footprintData);
                 }
             );
-        }
-        else return watchId;
+        } else return watchId;
     };
 
     // 结束监听
@@ -287,29 +318,67 @@ export default class extends React.Component {
         }
     };
 
-    startRecordFootprint(){
+    startRecordFootprint() {
         this.watchId = this.watchPosition(this.watchId);
     }
 
-    finishRecordFootprint(){
+    upLoadTrace() {
+        const {traceNum, footprintData, trid} = this.state;
+        let tmp_trid = -1;
+        let tmp = traceNum;
+        tmp++;
+        this.setState({traceNum: tmp});
+        addTrace(sid, tid)
+            .then(res => {
+                console.log("addTrace", res);
+                tmp_trid = res.data.trid;
+                this.setState({trid: [...trid, tmp_trid]});
+                console.log("upLoadTrace: trid", tmp_trid);
+                //TODO:每次最多100个点
+                let points = footprintData.map((position) => {
+                    return {
+                        location: `${position.coords.longitude.toFixed(6)},${position.coords.latitude.toFixed(6)}`,
+                        locatetime: position.timestamp
+                    }
+                })
+                // console.log(`~upload: `,footprintData.length);
+                // console.log(`~upload: `,JSON.stringify(points));
+                let S_points = JSON.stringify(points);
+                addPoints(sid, tid, tmp_trid, S_points)
+                    .then(res => {
+                        console.log("upLoadTrace:addPoints", res);
+                    })
+                    .catch(err => {
+                        console.log('upLoadTrace:addPoints 失败', err);
+                    });
+
+                console.log("upLoadTrace:addPoints", trid);
+            })
+            .catch(err => {
+                console.log('upLoadTrace: addTrace 失败');
+            });
+    }
+
+    finishRecordFootprint() {
         this.clearWatch(this.watchId);
+        this.upLoadTrace();
 
         // this.setState({ location: null });
     }
 
-    planDrivingRoute(){
+    planDrivingRoute() {
         const markers = this.state.markers;
-        if(markers.length < 1) {
+        if (markers.length < 1) {
             alert("Need 1 or more markers to plan route !");
             return;
         }
-        if(markers.length > 16){
+        if (markers.length > 16) {
             alert("Only support 16 or less markers to plan driving route !");
             return;
         }
-        const desPos = markers[markers.length-1];
+        const desPos = markers[markers.length - 1];
         const oriPos = this.state.location;
-        if(oriPos == null){
+        if (oriPos == null) {
             alert("Can't locate your current pos, please check your GPS !");
             return;
         }
@@ -321,8 +390,8 @@ export default class extends React.Component {
         console.log(waypointsStr);
 
         // TODO: 让用户选择是否从自己当前位置开始
-        console.log(desPos,oriPos);
-        const pois = getDrivingRoute( oriPos.coords.longitude, oriPos.coords.latitude, desPos.longitude, desPos.latitude, waypointsStr)
+        console.log(desPos, oriPos);
+        const pois = getDrivingRoute(oriPos.coords.longitude, oriPos.coords.latitude, desPos.longitude, desPos.latitude, waypointsStr)
             .then(res => {
                 let planRoutePolyline = this.convertPolylineStr2ArrJSON(this.convertPlanRouteData2PolylineStr(res));  // 如若刚刚规划完路径，转换并绘制
                 console.log('驾车路径规划 planRoutePolyline ', planRoutePolyline);
@@ -333,25 +402,25 @@ export default class extends React.Component {
             });
     }
 
-    planWalkingRoute(){
+    planWalkingRoute() {
         const markers = this.state.markers;
-        if(markers.length < 1) {
+        if (markers.length < 1) {
             alert("Need 1 or more markers to plan route !");
             return;
         }
-        if(markers.length != 1) {
+        if (markers.length != 1) {
             alert("步行路径规划仅支持设置单一标记点!");
             return;
         }
         const desPos = markers[0];
         const oriPos = this.state.location;
-        if(oriPos == null){
+        if (oriPos == null) {
             alert("Can't locate your current pos, please check your GPS !");
             return;
         }
         // TODO: 让用户选择是否从自己当前位置开始
-        console.log(desPos,oriPos);
-        const pois = getWalkingRoute( oriPos.coords.longitude, oriPos.coords.latitude, desPos.longitude, desPos.latitude)
+        console.log(desPos, oriPos);
+        const pois = getWalkingRoute(oriPos.coords.longitude, oriPos.coords.latitude, desPos.longitude, desPos.latitude)
             .then(res => {
                 let planRoutePolyline = this.convertPolylineStr2ArrJSON(this.convertPlanRouteData2PolylineStr(res));  // 如若刚刚规划完路径，转换并绘制
                 this.setState({planRoute: res, planRoutePolyline: planRoutePolyline,});
@@ -360,17 +429,20 @@ export default class extends React.Component {
                 console.log('步行路径规划失败');
             });
         let i = 1;
-        for(; i < markers.length; ++i){
+        for (; i < markers.length; ++i) {
             const oriPos = markers[i - 1];
             const desPos = markers[i];
-            console.log(desPos,oriPos);
+            console.log(desPos, oriPos);
             this.wait();
-            const pois = getWalkingRoute( oriPos.longitude, oriPos.latitude, desPos.longitude, desPos.latitude)
+            const pois = getWalkingRoute(oriPos.longitude, oriPos.latitude, desPos.longitude, desPos.latitude)
                 .then(res => {
                     let newPlanRoutePolyline = this.convertPolylineStr2ArrJSON(this.convertPlanRouteData2PolylineStr(res));  // 如若刚刚规划完路径，转换并绘制
                     const planRoute = this.state.planRoute;
                     const planRoutePolyline = this.state.planRoutePolyline;
-                    this.setState({planRoute: [...planRoute, res], planRoutePolyline: [...planRoutePolyline, newPlanRoutePolyline],});
+                    this.setState({
+                        planRoute: [...planRoute, res],
+                        planRoutePolyline: [...planRoutePolyline, newPlanRoutePolyline],
+                    });
                     console.log(planRoutePolyline);
                 })
                 .catch(err => {
@@ -380,31 +452,33 @@ export default class extends React.Component {
 
     }
 
-    convertPlanRouteData2PolylineStr(res){
-        return (res.route.paths[0].steps.map((step) => { return step.polyline})).join(";");
+    convertPlanRouteData2PolylineStr(res) {
+        return (res.route.paths[0].steps.map((step) => {
+            return step.polyline
+        })).join(";");
     }
 
-    convertPolylineStr2ArrJSON(polylineStr:string){
+    convertPolylineStr2ArrJSON(polylineStr: string) {
         const arr0 = polylineStr.split(';');
-        if(!arr0.length) return null;
+        if (!arr0.length) return null;
         const len = arr0.length;
         let j = 0;
         let arr: any[][] = [];
-        for(; j < len; ++j){
+        for (; j < len; ++j) {
             arr.push(arr0[j].split(','));
         }
         let i = 0;
         let arrayJSON = [];
-        for(; i < len; ++i){  // *1 convert string to num
-            arrayJSON.push({"longitude":arr[i][0]*1,"latitude":arr[i][1]*1});
+        for (; i < len; ++i) {  // *1 convert string to num
+            arrayJSON.push({"longitude": arr[i][0] * 1, "latitude": arr[i][1] * 1});
         }
         console.log(arrayJSON);  // arrayJSON 为所需
         return arrayJSON;
     }
 
-    handleRecordFootprintBtnClicked(){
+    handleRecordFootprintBtnClicked() {
         const status = this.state.isRecordingFootprint;
-        if(!status) {  // start footprint
+        if (!status) {  // start footprint
             this.startRecordFootprint();
         } else {  // end footprint
             this.finishRecordFootprint();
@@ -412,13 +486,13 @@ export default class extends React.Component {
         this.setState({isRecordingFootprint: !status});
     }
 
-    handlePlanRouteBtnClicked(){
+    handlePlanRouteBtnClicked() {
         this.showPlanRouteActionSheet();
         this.setState({markersEditable: false});
     }
 
 
-    handleClearPlanRouteBtnClicked(){
+    handleClearPlanRouteBtnClicked() {
         this.setState({
             markers: [],
             planRoute: [],
@@ -426,16 +500,17 @@ export default class extends React.Component {
         });
     }
 
-    handleMarkersModifyBtnClicked(){
+    handleMarkersModifyBtnClicked() {
         const status = this.state.markersEditable;
-        if(!status) {alert("点击地图添加 Marker，点击 Marker 移除");}
+        if (!status) {
+            alert("点击地图添加 Marker，点击 Marker 移除");
+        }
         this.setState({markersEditable: !status});
     }
 
 
-
-    handleMarkerModify(position: never){
-        if(!this.state.markersEditable) return;
+    handleMarkerModify(position: never) {
+        if (!this.state.markersEditable) return;
         const markers = this.state.markers;
         markers.splice(markers.indexOf(position), 1);
         this.setState({markers: [...markers]});
@@ -443,7 +518,7 @@ export default class extends React.Component {
 
     log(event: string, data: any) {
         console.log(data);
-        if(event == "onLocation"){
+        if (event == "onLocation") {
             this.setState({
                 location: data,
             });
@@ -462,33 +537,51 @@ export default class extends React.Component {
     }
 
     logger(name: string) {
-        return ({ nativeEvent }: NativeSyntheticEvent<any>) => this.log(name, nativeEvent);
+        return ({nativeEvent}: NativeSyntheticEvent<any>) => this.log(name, nativeEvent);
     }
 
-    renderItem = ({ item }: ListRenderItemInfo<any>) => (
+    renderItem = ({item}: ListRenderItemInfo<any>) => (
         <Text style={style.logText}>
             {item.time} {item.event}: {item.data}
         </Text>
     );
 
     render() {
-        const {markers, footprintData, planRoutePolyline, searchTipsText, mapType, imgs, photoMarkers, markersEditable, isRecordingFootprint} = this.state;
-        console.log(footprintData);
+        const {
+            markers,
+            footprintData,
+            planRoutePolyline,
+            searchTipsText,
+            mapType,
+            imgs,
+            photoMarkers,
+            markersEditable,
+            isRecordingFootprint
+        } = this.state;
+        console.log("footprintData: ", footprintData);
         const events = ["onLoad", "onPress", "onPressPoi", "onLongPress", "onCameraIdle", "onLocation"];
         const buttonMarkersModifyText = markersEditable ? "完成标记" : "添加或删除标记";
-        const buttonMarkersModifyIcon = markersEditable ? <IconMC name="map-marker-off" style={style.actionButtonIcon} /> : <IconMC name="map-marker-plus" style={style.actionButtonIcon} />;
+        const buttonMarkersModifyIcon = markersEditable ?
+            <IconMC name="map-marker-off" style={style.actionButtonIcon}/> :
+            <IconMC name="map-marker-plus" style={style.actionButtonIcon}/>;
         const buttonRecordFootprintText = isRecordingFootprint ? "结束足迹" : "开始足迹";
         return (
             <View style={style.body}>
                 <SearchBar
-                    ref={ref=>this.search = ref}
+                    ref={ref => this.search = ref}
                     placeholder="搜索地点添加标记"
-                    onChangeText={(newSearchText)=> {this.handleSearchTextChange(newSearchText)}}
-                    onSearchButtonPress={()=> {this.handleSearchButtonPressed()}}
+                    onChangeText={(newSearchText) => {
+                        this.handleSearchTextChange(newSearchText)
+                    }}
+                    onSearchButtonPress={() => {
+                        this.handleSearchButtonPressed()
+                    }}
                 />
                 {searchTipsText
                     .map(a => (
-                        <Text style={style.listItem} key={a} onPress={()=>{this.handleSearchTipClicked(a)}}>
+                        <Text style={style.listItem} key={a} onPress={() => {
+                            this.handleSearchTipClicked(a)
+                        }}>
                             {a}
                         </Text>
                     ))}
@@ -500,16 +593,18 @@ export default class extends React.Component {
                     myLocationEnabled={true}
                     myLocationButtonEnabled={true}
                     mapType={mapType}
-                    onPress={({ nativeEvent }) => {
+                    onPress={({nativeEvent}) => {
                         this.search.unFocus();
-                        if(this.state.markersEditable) this.setState({markers: [...markers, nativeEvent]});
+                        if (this.state.markersEditable) this.setState({markers: [...markers, nativeEvent]});
                     }}
                 >
                     <Polyline  // 记录的足迹
                         width={5}
                         color="rgba(255, 0, 0, 0.5)"
                         // onPress={() => alert("onPress")}
-                        points={footprintData.map((position) => { return {latitude: position.coords.latitude, longitude: position.coords.longitude}})}
+                        points={footprintData.map((position) => {
+                            return {latitude: position.coords.latitude, longitude: position.coords.longitude}
+                        })}
                         // gradient  // 渐变颜色
                     />
                     <Polyline  // 规划的路径
@@ -530,7 +625,9 @@ export default class extends React.Component {
                             key={`${position.latitude},${position.longitude}`}
                             icon={require("../images/flag.png")}
                             position={position}
-                            onPress={() => {this.handleMarkerModify(position)}}
+                            onPress={() => {
+                                this.handleMarkerModify(position)
+                            }}
                         />
                     ))}
                     {photoMarkers.map((item, index) => {  // 拍照打卡的图片
@@ -538,7 +635,10 @@ export default class extends React.Component {
                             <View key={index}>
                                 <Marker
                                     onPress={() => alert("onPress")}  // TODO: 查看足迹详情或图片详情，需要显示所有同一地点的图片吗？
-                                    position={{ latitude: item.location.coords.latitude, longitude: item.location.coords.longitude }}
+                                    position={{
+                                        latitude: item.location.coords.latitude,
+                                        longitude: item.location.coords.longitude
+                                    }}
                                     icon={{
                                         uri: item.imgs[0].uri,
                                         width: 30,
@@ -553,26 +653,42 @@ export default class extends React.Component {
                 </MapView>
                 {/* Rest of the app comes ABOVE the action button component !*/}
                 <ActionButton buttonColor="rgba(231,76,60,1)" position={'left'} offsetY={50}>
-                    <ActionButton.Item buttonColor='#9e9e9e' title="地图设置" onPress={() => {this.showMapTypeActionSheet()}}>
-                        <IconF5 name="map-marked-alt" style={style.actionButtonIcon} />
+                    <ActionButton.Item buttonColor='#9e9e9e' title="地图设置" onPress={() => {
+                        this.showMapTypeActionSheet()
+                    }}>
+                        <IconF5 name="map-marked-alt" style={style.actionButtonIcon}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#f39800' title="我在哪里" onPress={() => {this.updateLocationOnce()}}>
-                        <IconM name="not-listed-location" style={style.actionButtonIcon} />
+                    <ActionButton.Item buttonColor='#f39800' title="我在哪里" onPress={() => {
+                        this.updateLocationOnce()
+                    }}>
+                        <IconM name="not-listed-location" style={style.actionButtonIcon}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="清除规划和标记点" onPress={() => {this.handleClearPlanRouteBtnClicked()}}>
-                        <IconMC name="map-marker-remove" style={style.actionButtonIcon} />
+                    <ActionButton.Item buttonColor='#3498db' title="清除规划和标记点" onPress={() => {
+                        this.handleClearPlanRouteBtnClicked()
+                    }}>
+                        <IconMC name="map-marker-remove" style={style.actionButtonIcon}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#1abc9c' title="路径规划" onPress={() => {this.handlePlanRouteBtnClicked()}}>
-                        <IconF5 name="route" style={style.actionButtonIcon} />
+                    <ActionButton.Item buttonColor='#1abc9c' title="路径规划" onPress={() => {
+                        this.handlePlanRouteBtnClicked()
+                    }}>
+                        <IconF5 name="route" style={style.actionButtonIcon}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title={buttonMarkersModifyText} onPress={() => {this.handleMarkersModifyBtnClicked()}}>
+                    <ActionButton.Item buttonColor='#3498db' title={buttonMarkersModifyText} onPress={() => {
+                        this.handleMarkersModifyBtnClicked()
+                    }}>
                         {buttonMarkersModifyIcon}
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#9b59b6' title="拍照打卡" onPress={() => {this.showPhotoAlbumVideoActionSheet()}}>
-                        <IconMC name="camera-marker" style={style.actionButtonIcon} />
+                    <ActionButton.Item buttonColor='#9b59b6' title="拍照打卡" onPress={() => {
+                        this.showPhotoAlbumVideoActionSheet()
+                    }}>
+                        <IconMC name="camera-marker" style={style.actionButtonIcon}/>
                     </ActionButton.Item>
                 </ActionButton>
-                <ActionButton position={'center'} offsetY={40} size={85} renderIcon={()=>( isRecordingFootprint ? <IconMC name='pause' style={style.actionButtonBigIcon} /> : <IconMC name='foot-print' style={style.actionButtonBigIcon} />)} onPress={() => {this.handleRecordFootprintBtnClicked()}}>
+                <ActionButton position={'center'} offsetY={40} size={85} renderIcon={() => (isRecordingFootprint ?
+                    <IconMC name='pause' style={style.actionButtonBigIcon}/> :
+                    <IconMC name='foot-print' style={style.actionButtonBigIcon}/>)} onPress={() => {
+                    this.handleRecordFootprintBtnClicked()
+                }}>
                     {/*title={buttonRecordFootprintText}*/}
                 </ActionButton>
                 {/*<FlatList style={style.logs} data={this.state.logs} renderItem={this.renderItem} />*/}
@@ -591,10 +707,12 @@ export default class extends React.Component {
                 <ActionSheet
                     ref={o => this.MapTypeActionSheet = o}
                     title={'地图种类'}
-                    options={['标准', '卫星','导航','夜间', '公交', '取消']}
+                    options={['标准', '卫星', '导航', '夜间', '公交', '取消']}
                     cancelButtonIndex={5}
                     destructiveButtonIndex={0}
-                    onPress={(index) => { this.handleMapTypeActionSheetSelect(index)}}
+                    onPress={(index) => {
+                        this.handleMapTypeActionSheetSelect(index)
+                    }}
                 />
                 <ActionSheet
                     ref={o => this.PlanRouteActionSheet = o}
@@ -602,7 +720,9 @@ export default class extends React.Component {
                     options={['驾车', '步行', '取消']}
                     cancelButtonIndex={2}
                     destructiveButtonIndex={0}
-                    onPress={(index) => { this.handlePlanRouteActionSheetSelect(index)}}
+                    onPress={(index) => {
+                        this.handlePlanRouteActionSheetSelect(index)
+                    }}
                 />
                 <ActionSheet
                     ref={o => this.PhotoAlbumVideoActionSheet = o}
@@ -610,7 +730,9 @@ export default class extends React.Component {
                     options={['打开相机', '从相册中选择', '选择视频', '取消']}
                     cancelButtonIndex={3}
                     destructiveButtonIndex={0}
-                    onPress={(index) => { this.handlePhotoAlbumVideoSheetSelect(index)}}
+                    onPress={(index) => {
+                        this.handlePhotoAlbumVideoSheetSelect(index)
+                    }}
                 />
             </View>
         );
@@ -619,8 +741,8 @@ export default class extends React.Component {
 
 
 const style = StyleSheet.create({
-    body: { flex: 1 },
-    logs: { elevation: 8, flex: 1 },
+    body: {flex: 1},
+    logs: {elevation: 8, flex: 1},
     logText: {
         fontFamily: Platform.OS === "ios" ? "menlo" : "monospace",
         fontSize: 12,

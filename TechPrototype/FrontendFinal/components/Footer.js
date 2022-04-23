@@ -54,7 +54,8 @@ export default function Footer() {
                         opacity={Page === 'shot' ? 1 : 0.5}
                         py="2"
                         flex={1}
-                        onPress={() => SelectPage('shot')}>
+                        //onPress={() => SelectPage('shot')}>
+                        onPress={() => SelectPage('history')}>
                         <Center>
                             {/*<Icon*/}
                             {/*  mb="1"*/}

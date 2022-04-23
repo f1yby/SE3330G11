@@ -135,9 +135,86 @@ export const getSearchTips = (lng, lat, keywords) => {
     });
 };
 
+//请求新的trid并返回
+export const addTrace = (sid, tid) => {
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `https://tsapi.amap.com/v1/track/trace/add?key=beba67dedb3de25a4f91da96b33c62c0&sid=${sid}&tid=${tid}`,
+            {
+                method: 'POST',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS IN ADD NEW TRACE ', result);
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR IN ADD NEW TRACE ', error);
+                reject(error);
+            });
+    });
+};
 
+//在trace中增加点集
+export const addPoints = (sid, tid, trid, points) => {
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `https://tsapi.amap.com/v1/track/point/upload?sid=${sid}&key=beba67dedb3de25a4f91da96b33c62c0&tid=${tid}&trid=${trid}&points=${points}`,
+            {
+                method: 'POST',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS IN ADD POINTS ', result);
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR IN ADD POINTS ', error);
+                reject(error);
+            });
+    });
+};
 
+//根据trid查询轨迹
+export const askTraceByTrid = (sid, tid, trid) => {
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `https://tsapi.amap.com/v1/track/terminal/trsearch?sid=${sid}&key=beba67dedb3de25a4f91da96b33c62c0&tid=${tid}&trid=${trid}`,
+            {
+                method: 'GET',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS IN askTraceByTrid ', result);
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR IN askTraceByTrid ', error);
+                reject(error);
+            });
+    });
+};
 
-
-
-
+//根据Uxin时间查询轨迹
+export const askTraceByTime = (sid, tid, starttime, endtime) => {
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `https://tsapi.amap.com/v1/track/terminal/trsearch?sid=${sid}&key=beba67dedb3de25a4f91da96b33c62c0&tid=${tid}&starttime=${starttime}&endtime=${endtime}`,
+            {
+                method: 'GET',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS IN askTraceByTime ', result);
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR IN askTraceByTime ', error);
+                reject(error);
+            });
+    });
+};
