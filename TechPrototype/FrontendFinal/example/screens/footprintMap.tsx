@@ -597,6 +597,7 @@ export default class extends React.Component {
                         this.search.unFocus();
                         if (this.state.markersEditable) this.setState({markers: [...markers, nativeEvent]});
                     }}
+
                 >
                     <Polyline  // 记录的足迹
                         width={5}
