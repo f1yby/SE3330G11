@@ -347,15 +347,18 @@ export default class extends React.Component {
                 addPoints(sid, tid, tmp_trid, S_points)
                     .then(res => {
                         console.log("upLoadTrace:addPoints", res);
+                        alert("足迹上传成功，trid "+ tmp_trid);
                     })
                     .catch(err => {
                         console.log('upLoadTrace:addPoints 失败', err);
+                        alert("足迹上传失败");
                     });
 
                 console.log("upLoadTrace:addPoints", trid);
             })
             .catch(err => {
                 console.log('upLoadTrace: addTrace 失败');
+                alert("足迹上传失败");
             });
     }
 

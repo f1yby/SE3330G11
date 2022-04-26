@@ -17,21 +17,56 @@ import {
     Pressable,
 } from 'native-base';
 import {
-  Dimensions,
-  ImageBackground,
-  TouchableOpacity,
-  View,
+    Dimensions,
+    ImageBackground, Platform,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 
 import AntDesign from "react-native-vector-icons/AntDesign"
+import {MapView, Polyline} from "react-native-amap3d";
+import {AMapSdk} from "../lib/src";
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
+
+
+const line1 = [
+    { latitude: 40.006901, longitude: 116.097972 },
+    { latitude: 41.006901, longitude: 116.597972 },
+];
+
+const line2 = [
+    { latitude: 39.906901, longitude: 116.097972 },
+    { latitude: 39.906901, longitude: 116.597972 },
+];
+
+const line3 = [
+    { latitude: 39.806901, longitude: 116.097972 },
+    { latitude: 32.806901, longitude: 116.257972 },
+    { latitude: 33.806901, longitude: 116.457972 },
+    { latitude: 39.806901, longitude: 116.597972 },
+];
+
+
+
+
 const DetailInfo = () => {
+
     const [liked, setliked] = React.useState(0);
     const [collected, setColleted] = React.useState(0);
-    return <Box alignItems="center" h={h * 0.7}>
-        <Box width="100%"  overflow="hidden"   
+
+    React.useEffect(() => {
+        AMapSdk.init(
+            Platform.select({
+                android: "2b98dcea615041bc691ba73942fddc84",
+                // ios: "186d3464209b74effa4d8391f441f14d",
+            })
+        );
+    }, []);
+
+    return <Box alignItems="center" h={h * 1.3}>
+        <Box width="100%"  overflow="hidden"
       //   _dark={{
       //   borderColor: "coolGray.600",
       //   backgroundColor: "gray.700"
@@ -59,7 +94,7 @@ const DetailInfo = () => {
               PHOTOS
             </Center>
           </Box>
-          <Stack  p="5%"  space={3} height={0.3 * h}>
+          <Stack  p="5%"  space={3} height={0.85 * h}>
             <HStack space={2}  justifyContent="space-between">
             <Stack space={2}>
               <Heading size="md" ml="-1" bold>
@@ -107,7 +142,8 @@ const DetailInfo = () => {
             </HStack>
             <Text fontWeight="400">
               发布的文字内容，发布的文字内容，发布的文字内容，不超过30字，
-              发布的文字内容，不超过30字，发布的文字内容，不超过30字
+              发布的文字内容，不超过30字，发布的文字内容，不超过30字，发布的文字内容，不超过30字，
+                发布的文字内容，不超过30字。
             </Text>
             <HStack alignItems="center" space={4} justifyContent="space-between">
               <HStack alignItems="center">
@@ -118,6 +154,39 @@ const DetailInfo = () => {
                 </Text>
               </HStack>
             </HStack>
+              {/*<HStack alignItems="center" space={4} justifyContent="space-between">*/}
+              {/*    <HStack alignItems="center">*/}
+              {/*        <Text color="coolGray.500" _dark={{*/}
+              {/*            color: "warmGray.200"*/}
+              {/*        }} fontWeight="600" fontSize="16">*/}
+              {/*            足迹*/}
+              {/*        </Text>*/}
+              {/*    </HStack>*/}
+              {/*</HStack>*/}
+              <MapView
+                  initialCameraPosition={{  // 初始化位置
+                      target: {
+                          latitude: 37.91095,
+                          longitude: 116.37296,
+                      },
+                      zoom: 10,  // 初始化大小等级
+                  }}
+                  // zoomControlsEnabled={false}  // 放大缩小按钮
+                  // minZoom={}  // 所允许调整的最大最小 放大缩小zoom级别
+                  scrollGesturesEnabled={false}
+                  style={{height:"65%"}}
+
+              >
+                  <Polyline width={5} color="rgba(255, 0, 0, 0.5)" points={line1} />
+                  <Polyline width={5} points={line2} dotted />
+                  <Polyline
+                      width={5}
+                      colors={["#f44336", "#2196f3", "#4caf50"]}
+                      onPress={() => alert("onPress")}
+                      points={line3}
+                      gradient
+                  />
+              </MapView>
           </Stack>
         </Box>
       </Box>;

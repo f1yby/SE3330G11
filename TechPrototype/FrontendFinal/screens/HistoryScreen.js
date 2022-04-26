@@ -13,7 +13,6 @@ import HistoryCard from "../components/Historycard";
 import Footer from '../components/Footer';
 import Header_FootPrint from "../components/Header";
 
-import {MapView, MapType} from "react-native-amap3d";
 import {StyleSheet} from "react-native";
 
 const w = Dimensions.get('window').width;
@@ -25,20 +24,6 @@ const HistoryScreen = () => {
 
         <View style={{flex: 1}}>
             <Header_FootPrint/>
-            {/*<MapView*/}
-            {/*    style={{flex:1}}*/}
-            {/*    distanceFilter={10}*/}
-            {/*    headingFilter={30}*/}
-            {/*    myLocationEnabled={true}*/}
-            {/*    myLocationButtonEnabled={true}*/}
-            {/*    region={{*/}
-            {/*        longitude: 116.397428,*/}
-            {/*        latitude: 39.90923,*/}
-            {/*        latitudeDelta: 0.1,*/}
-            {/*        longitudeDelta: 0.1,*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*</MapView>*/}
             <ScrollView width="100%" mt="0" mb={0.1 * h} height={h * 0.8}
                         _contentContainerStyle={{
                             mt: "1%",
