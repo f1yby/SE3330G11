@@ -189,10 +189,12 @@ export const askTraceByTrid = (sid, tid, trid) => {
             .then(response => response.json())
             .then(result => {
                 console.log('SUCCESS IN askTraceByTrid ', result);
+                // alert("成功");
                 resolve(result);
             })
             .catch(error => {
                 console.log('ERROR IN askTraceByTrid ', error);
+                // alert("失败");
                 reject(error);
             });
     });
@@ -217,4 +219,11 @@ export const askTraceByTime = (sid, tid, starttime, endtime) => {
                 reject(error);
             });
     });
+};
+
+export const convertTracePoints2ArrJSON = (points) => {
+    return (points.map((item) => {
+        let arr=item.location.split(",");
+        return {"longitude": arr[0] * 1, "latitude": arr[1] * 1}
+    }));
 };
