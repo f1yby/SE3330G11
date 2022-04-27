@@ -15,7 +15,7 @@ function MessageItem(props){
             }} _light={{
                 bg: "white"
             }}>
-                <Box pl="4" pr="5" py="2">
+                <Box pl="4" pr="5" py="2" height={'100%'} margin={'0'}>
                     <HStack alignItems="center" space={3}>
                         <Avatar size="48px" source={{
                             uri: props.data.avatarUrl

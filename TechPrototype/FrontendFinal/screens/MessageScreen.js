@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { Dimensions, TouchableOpacity, View } from "react-native";
-import { Button, Box, Text, Pressable, Heading, IconButton, Icon, HStack, Avatar, VStack, Spacer, Center, ScrollView, Divider} from "native-base";
+import React, {useState} from "react";
+import {Dimensions, TouchableOpacity, View} from "react-native";
+import {
+    Button, Box, Text, Pressable, Heading, IconButton, Icon, HStack, Avatar, VStack, Spacer, Center, ScrollView, Divider
+} from "native-base";
 // import { SwipeListView } from "react-native-swipe-list-view";
 // import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 // import Basic from "../components/MessageT";
@@ -13,7 +15,7 @@ const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
 
-function MessageScreen(){
+function MessageScreen() {
     const data = [{
         id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
         fullName: "Afreen Khan",
@@ -46,46 +48,31 @@ function MessageScreen(){
         avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU"
     }];
     const [mode, setMode] = React.useState("Basic");
-    return (
-        <View>
-            <Header_FootPrint />
-            <Center>
-            <Box _dark={{
-                bg: "coolGray.100"
-            }} _light={{
-                // bg: "primary.300"
-            }} flex="1" safeAreaTop  w="100%" height={0.7 * h}>
-                <HStack p={2} width={w}  justifyContent="space-between" alignItems="flex-start">
-                    <Heading  pl="2" pr="40%" size="lg"  margin="auto">
-                        我的消息
-                    </Heading>
-                    <Button size="lg" variant="subtle" width={w * 0.3} height={w * 0.1} borderRadius="full">
-                        全部清除
-                    </Button>
-                </HStack>
-                {/* <ScrollView
-                    width="100%" 
-                    _contentContainerStyle={{
-                        mt: "1%",
-                        mb: "4",
-                        mr:"0",
-                        ml:"0",
-                    }}
-                    // showsVerticalScrollIndicator={false}
-                > */}
-                <Box  mt={-0.1 * h} height={0.1 * h}/>
-                {data.map((item,index)=>{
-                                return(
-                                    <HStack flex="1" pl="2" mt="15%">
-                                        <MessageItem key={item.id} data={item} />
-                                    </HStack>
-                                )
-                            })}
-                    {/* <MessageItem data={data[0]} /> */}
-                {/* </ScrollView> */}
-            </Box>
-        </Center>
-    </View>);
+    return (<>
+        <Header_FootPrint/>
+        <HStack p={2} width={w} justifyContent="space-between" alignItems="flex-start">
+            <Heading pl="2" pr="40%" size="lg" margin="auto">
+                我的消息
+            </Heading>
+            <Button size="lg" variant="subtle" width={w * 0.3} height={'100%'} borderRadius="full">
+                全部清除
+            </Button>
+        </HStack>
+        <ScrollView
+            width="100%"
+            _contentContainerStyle={{
+                mt: "1%", mb: "4", mr: "0", ml: "0",
+            }}
+            // showsVerticalScrollIndicator={false}
+        >
+            {data.map((item, index) => {
+                return (<HStack flex="1" pl="2" height={'100%'} margin={'0'}>
+                    <MessageItem key={item.id} data={item}/>
+                </HStack>)
+            })}
+            {/* <MessageItem data={data[0]} /> */}
+        </ScrollView>
+    </>);
 
 }
 
