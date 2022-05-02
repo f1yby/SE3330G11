@@ -29,6 +29,9 @@ const bottom = 0.1 * h;
 const trid = [380, 400, 560, 580];
 const sid = 666058, tid = 519609448;
 
+// TODO: 将此处的uid修改为当前登录用户的uid
+const uid = 1;
+
 
 // select location data
 const items = [{

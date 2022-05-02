@@ -1,8 +1,5 @@
 package com.g11.footprint.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jdk.jfr.Unsigned;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
