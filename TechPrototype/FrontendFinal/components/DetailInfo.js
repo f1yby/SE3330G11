@@ -166,10 +166,10 @@ const DetailInfo = () => {
               <MapView
                   initialCameraPosition={{  // 初始化位置
                       target: {
-                          latitude: 37.91095,
-                          longitude: 116.37296,
+                          latitude: 31.020923,
+                          longitude: 121.432887,
                       },
-                      zoom: 10,  // 初始化大小等级
+                      zoom: 17.5,  // 初始化大小等级
                   }}
                   // zoomControlsEnabled={false}  // 放大缩小按钮
                   // minZoom={}  // 所允许调整的最大最小 放大缩小zoom级别
