@@ -32,4 +32,8 @@ public class FootPrint {
     public Integer getFid() {
         return fid;
     }
+
+    public Integer getTrid() {
+        return trid;
+    }
 }

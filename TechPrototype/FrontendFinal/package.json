@@ -46,6 +46,7 @@
     "react-native-reanimated": "^2.7.0",
     "react-native-scroll-bottom-sheet": "^0.7.0",
     "react-native-search-bar": "^3.5.1",
+    "react-native-storage": "^1.0.1",
     "react-native-svg": "^12.3.0",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-vector-icons": "^9.1.0",

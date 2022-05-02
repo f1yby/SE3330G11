@@ -1,7 +1,10 @@
 package com.g11.footprint.entity;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+=======
+>>>>>>> fa768384782dc92bb77b14770326284c891b800d
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

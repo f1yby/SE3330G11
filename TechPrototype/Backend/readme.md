@@ -55,3 +55,10 @@
 1. uid
 
 **return on success**:`[{'fid'=1,'trid'=1},...]`
+
+
+# Frontend Usage
+## User Login and Register
+1. In frontend  **utils/User.js**  change **IP address** in fetch to your own.
+2. create Database footprint, add user g11
+3. You need to **register** first, then you can login via account registered
