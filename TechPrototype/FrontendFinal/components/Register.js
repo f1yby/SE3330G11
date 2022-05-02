@@ -12,13 +12,17 @@ export class RegisterForm extends React.Component {
         this.state={
             name: "",
             password: "",
+            confirmPassword: "",
             email: "",
             iconUrl: "",
         }
     }
 
     handleRegister(){
-        const {name, password, email, iconUrl} = this.state;
+        const {name, password, email, iconUrl, confirmPassword} = this.state;
+        if(name === '') {alert("请输入用户名！"); return;}
+        if(password === '') {alert("请输入密码！"); return;}
+        if(password !== confirmPassword) {alert("两次密码输入不同！"); return;}
         console.log("handleRegister", name, password, email, iconUrl);
         const p = addUser(name, password, email, iconUrl)
             .then(res => {
@@ -69,7 +73,7 @@ export class RegisterForm extends React.Component {
                             <FormControl>
                                 <FormControl.Label>确认密码</FormControl.Label>
                                 <Input type="password" secureTextEntry={true}
-                                       // TODO: 验证确认密码是否与密码相同
+                                       onChangeText={(text) => this.setState({confirmPassword:text})}
                                 />
                             </FormControl>
                             <Button mt="2" colorScheme="primary" onPressIn={()=>this.handleRegister()}>
