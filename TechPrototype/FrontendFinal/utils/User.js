@@ -3,7 +3,7 @@ export const addUser = (name, password, email, iconUrl) => {
     return new Promise(function (resolve, reject) {
         fetch(
             // TODO: 修改为本机 IP 地址
-            `http://10.166.8.185:8080/user/add?name=${name}&password=${password}&email=${email}&iconUrl=${iconUrl}`,
+            `http://192.168.1.107:8080/user/add?name=${name}&password=${password}&email=${email}&iconUrl=${iconUrl}`,
             {
                 method: 'POST',
             },
@@ -24,7 +24,7 @@ export const addUser = (name, password, email, iconUrl) => {
 export const authUser = (name, password) => {
     return new Promise(function (resolve, reject) {
         fetch(
-            `http://10.166.8.185:8080/user/auth?name=${name}&password=${password}`,
+            `http://192.168.1.107:8080/user/auth?name=${name}&password=${password}`,
             {
                 method: 'POST',
             },

@@ -20,6 +20,7 @@ import Historycard from "../components/Historycard";
 import moment from "moment";
 import DateRangePicker from "react-native-daterange-picker";
 import MultiSelect from 'react-native-multiple-select';
+import {storage} from "../utils/Storage";
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
@@ -28,9 +29,6 @@ const h = Dimensions.get('window').height;
 const bottom = 0.1 * h;
 const trid = [380, 400, 560, 580];
 const sid = 666058, tid = 519609448;
-
-// TODO: 将此处的uid修改为当前登录用户的uid
-const uid = 1;
 
 
 // select location data
@@ -65,6 +63,7 @@ export default class extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             points: [],
 
@@ -76,6 +75,16 @@ export default class extends React.Component {
             // location select
             selectedItems : [],
         };
+    }
+    uid = null;  // 当前登录用户的 uid
+
+    componentDidMount() {
+        // 取 uid
+        storage.load('uid', (data) => {
+            // TODO：注意此时是异步返回，需要在里面继续通过 uid 查找所有轨迹
+            this.uid = data;
+            console.log("Footprint History: get uid ", this.uid);
+        })
     }
 
 
