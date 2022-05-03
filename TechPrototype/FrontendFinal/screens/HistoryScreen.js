@@ -103,6 +103,19 @@ export default class extends React.Component {
         })
     }
 
+    filterByDateRange(){
+        const {startDate, endDate} = this.state;
+        const t1 = startDate.format("YYYY-MM-DD");
+
+        // 分别比较与基准日期相差的天数
+        moment("2019-02-01").diff(moment("2019-01-01"),'days');
+
+        const t2 = endDate.format("YYYY-MM-DD");
+        console.log("开始日期：",t1);
+        console.log("结束日期：",t2);
+        console.log("比较：",moment(t2).isBefore(t1));
+    }
+
 
     // date range select
     setDates = (dates) => {
@@ -164,6 +177,7 @@ export default class extends React.Component {
                         selectedItemIconColor="gray"
                         itemTextColor="#000"
                         displayKey="name"
+
                         // TODO: 1. Tag 内容似乎只支持英文字母，不支持中文字符
                         //       2. 修改颜色
 

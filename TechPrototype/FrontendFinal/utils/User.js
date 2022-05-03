@@ -1,9 +1,10 @@
+import config from "../config";
+
 //注册后增加用户
 export const addUser = (name, password, email, iconUrl) => {
     return new Promise(function (resolve, reject) {
         fetch(
-            // TODO: 修改为本机 IP 地址
-            `http://192.168.1.102:8080/user/add?name=${name}&password=${password}&email=${email}&iconUrl=${iconUrl}`,
+            `${config.backendUrl}/user/add?name=${name}&password=${password}&email=${email}&iconUrl=${iconUrl}`,
             {
                 method: 'POST',
             },
@@ -24,7 +25,7 @@ export const addUser = (name, password, email, iconUrl) => {
 export const authUser = (name, password) => {
     return new Promise(function (resolve, reject) {
         fetch(
-            `http://192.168.1.102:8080/user/auth?name=${name}&password=${password}`,
+            `${config.backendUrl}/user/auth?name=${name}&password=${password}`,
             {
                 method: 'POST',
             },
