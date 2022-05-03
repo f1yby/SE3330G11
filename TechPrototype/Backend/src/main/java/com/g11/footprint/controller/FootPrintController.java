@@ -24,7 +24,7 @@ public class FootPrintController {
     private UserRepository userRepository;
 
     @PostMapping(path = "/add")
-    public @ResponseBody Integer AddFootPrint(@RequestParam Integer uid, @RequestParam Integer trid, @RequestParam Integer date, @RequestParam String location) {
+    public @ResponseBody Integer AddFootPrint(@RequestParam Integer uid, @RequestParam Integer trid, @RequestParam Integer date, @RequestParam String location, @RequestParam String centerLatitude, @RequestParam String centerLongitude, @RequestParam String zoom) {
         FootPrint footPrint = new FootPrint();
         Optional<User> result = userRepository.findById(uid);
         if (result.isPresent()) {
@@ -32,6 +32,9 @@ public class FootPrintController {
             footPrint.setTrid(trid);
             footPrint.setDate(date);
             footPrint.setLocation(location);
+            footPrint.setCenterLatitude(centerLatitude);
+            footPrint.setCenterLongitude(centerLongitude);
+            footPrint.setZoom(zoom);
             footPrintRepository.save(footPrint);
             return footPrint.getFid();
         }
@@ -55,6 +58,7 @@ public class FootPrintController {
         Optional<User> user = userRepository.findById(uid);
         return user.map(value -> footPrintRepository.getAllByUserAndLocation(value, location)).orElse(null);
     }
+
     @PostMapping(path = "/findByUidAndDatePeriod")
     public @ResponseBody List<FootPrint> findFootPrintByUidAndDatePeriod(@RequestParam Integer uid, @RequestParam Integer dateStart, @RequestParam Integer dateEnd) {
         Optional<User> user = userRepository.findById(uid);
