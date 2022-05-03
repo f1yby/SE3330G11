@@ -24,6 +24,12 @@ public class FootPrint {
 
     private String location;
 
+    private String centerLongitude;
+
+    private String centerLatitude;
+
+    private String zoom;
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -55,4 +61,30 @@ public class FootPrint {
     public void setDate(Integer date) {
         this.date = date;
     }
+
+    public void setCenterLongitude(String centerLongitude) {
+        this.centerLongitude = centerLongitude;
+    }
+
+    public void setCenterLatitude(String centerLatitude) {
+        this.centerLatitude = centerLatitude;
+    }
+
+    public String getCenterLongitude() {
+        return centerLongitude;
+    }
+
+    public String getCenterLatitude() {
+        return centerLatitude;
+    }
+
+    public String getZoom() {
+        return zoom;
+    }
+
+    public void setZoom(String zoom) {
+        this.zoom = zoom;
+    }
+
+
 }
