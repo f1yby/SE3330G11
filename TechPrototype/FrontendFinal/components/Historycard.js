@@ -15,7 +15,7 @@ import {PageSelectProvider} from "../utils/SwitchPage";
 import {MapView, Polyline} from "react-native-amap3d";
 import {askTraceByTrid,convertTracePoints2ArrJSON} from "../example/components/Position"
 import {Marker} from "../lib/src";
-import config from "../config";
+import config from "../utils/config";
 import moment from "moment";
 
 const w = Dimensions.get('window').width;

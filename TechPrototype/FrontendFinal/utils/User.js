@@ -1,4 +1,4 @@
-import config from "../config";
+import config from "./config";
 
 //注册后增加用户
 export const addUser = (name, password, email, iconUrl) => {
