@@ -28,7 +28,7 @@ export const theme = extendTheme({config});
 
 export default function App() {
     const [Page, SelectPage] = useState('home');
-
+    const [Props, SetProps] = useState({})
 
     const Pages = {
         'home': <HomeScreen/>,
@@ -37,10 +37,10 @@ export default function App() {
         'browse': <BrowseScreen/>,
         'message': <MessageScreen/>,
         'history': <HistoryScreen/>,
-        'personal':<PersonalScreen/>,
-        'detail':<DetailScreen/>,
-        'map':<MapScreen/>,
-        'mapDetailInfo':<MapDetailInfo/>,
+        'personal': <PersonalScreen/>,
+        'detail': <DetailScreen/>,
+        'map': <MapScreen/>,
+        'mapDetailInfo': <MapDetailInfo/>,
     }
 
 
@@ -58,7 +58,9 @@ export default function App() {
             Page: Page,
             SelectPage: (p) => {
                 SelectPage(p)
-            }, Props: {}
+            }, Props: Props, SetProps: (p) => {
+                SetProps(p)
+            }
         }}>
             {Pages[Page]}
             {/*<Footer/>*/}
