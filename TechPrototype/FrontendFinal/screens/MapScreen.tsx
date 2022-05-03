@@ -5,7 +5,7 @@ import {Platform, Text, useColorScheme, View} from "react-native";
 import screens from "../example/screens";
 import Home from "../example/home";
 import FootprintMap from "../example/screens/footprintMap";
-import Footer from "../components/Footer";
+import Footer from "../components/Footer.js";
 import {AMapSdk} from "react-native-amap3d";
 
 const Stack = createNativeStackNavigator();
