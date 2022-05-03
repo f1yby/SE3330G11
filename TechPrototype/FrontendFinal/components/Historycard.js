@@ -10,70 +10,103 @@ import {
     Text
 } from 'native-base';
 
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import {PageSelectProvider} from "../utils/SwitchPage";
 import {MapView, Polyline} from "react-native-amap3d";
-import {askTraceByTrid,convertTracePoints2ArrJSON} from "../example/components/Position"
-import {Marker} from "../lib/src";
+import {askTraceByTrid, convertTracePoints2ArrJSON} from "../example/components/Position"
+import {AMapSdk, Marker} from "../lib/src";
 import config from "../config";
 import moment from "moment";
+import MyMapView from "./MyMapView";
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
 const sid = 666058, tid = 519609448;
+
 class Historycard extends Component {
     constructor(props) {
         super(props);
         // console.log("componentDidMount:", this.props.id);
     }
+
     date = "";
     location = "";
     state = {
-        points: []
+        points: [],
+        initial_zoom_level: 17.5,
+        initial_longitude: 31.020923,
+        initial_latitude: 121.432887,
     }
-    async componentDidMount() {
+
+    componentWillMount() {
+        AMapSdk.init(
+            Platform.select({
+                android: "2b98dcea615041bc691ba73942fddc84",
+                // ios: "186d3464209b74effa4d8391f441f14d",
+            })
+        );
         console.log("componentDidMount:", this.props.id);
-        this.date = moment(config.baseDate).add(this.props.trace.date,"days").format(config.dateFormat);
+        this.date = moment(config.baseDate).add(this.props.trace.date, "days").format(config.dateFormat);
         this.location = this.props.trace.location;
         askTraceByTrid(sid, tid, this.props.id)
             .then(
                 res => {
                     // alert("成功!");
                     console.log('History SUCCESS', res);
-                    let newpoints=convertTracePoints2ArrJSON(res.data.tracks[0].points);
+                    let newpoints = convertTracePoints2ArrJSON(res.data.tracks[0].points);
                     console.log('History SUCCESS2', newpoints);
                     this.setState({points: convertTracePoints2ArrJSON(res.data.tracks[0].points)});
+                    // let latitude_min = 180, longitude_min = 180, latitude_max = 0, longitude_max = 0;
+                    // for (var i = 0, l = newpoints.length; i < l; i++) {
+                    //     latitude_min = Math.min(latitude_min, newpoints[i].latitude);
+                    //     latitude_max = Math.max(latitude_max, newpoints[i].latitude);
+                    //     longitude_min = Math.min(longitude_min, newpoints[i].longitude);
+                    //     longitude_max = Math.max(longitude_max, newpoints[i].longitude);
+                    // }
+                    // this.initial_long = newpoints[0].latitude;
+                    // this.initial_lati = newpoints[0].longitude;
+                    // this.setState({
+                    //     initial_latitude: (latitude_min + latitude_max) / 2.0,
+                    //     initial_longitude: (longitude_min + longitude_max) / 2.0,
+                    //     initial_zoom_level: 5
+                    // });
+                    // this.forceUpdate();
                 }
             )
             .catch(err => {
-                    console.log('History 获取失败', result);
+                    console.log('History 获取失败', err);
                 }
             )
 
     }
     render() {
-        console.log("MYTEST:", this.state.points);
-        this.date = moment(config.baseDate).add(this.props.trace.date,"days").format(config.dateFormat);
+        console.log("MYTEST location!:", this.props.id, this.state.initial_longitude, this.state.initial_latitude, this.state.initial_zoom_level);
+        this.date = moment(config.baseDate).add(this.props.trace.date, "days").format(config.dateFormat);
         this.location = this.props.trace.location;
-        //TODO: 修复bug 显示undefined
         return <PageSelectProvider.Consumer>
-            {({Page, SelectPage, Props}) =>
+            {({Page, SelectPage, Props, SetProps}) =>
                 (<Box width={0.95 * w} direction="column" margin={0.02 * w} height={0.4 * w}
                       onTouchEnd={
-                        () => {
-                          Props.points = this.state.points;
-                          SelectPage('mapDetailInfo');
-                      }}>
+                          () => {
+                              SetProps({points: this.state.points, })
+                              SelectPage('mapDetailInfo');
+                              console.log("go to mapdetail:", Props.points);
+                          }
+                }
+                    >
                         <AspectRatio w="100%" ratio={{base: 25 / 9, md: 16 / 9}}>
-
+                            {/*<MyMapView latitude={31.020923} longtitude={121.432887}*/}
+                            {/*    zoom={10} points={this.state.points}/>*/}
                             <MapView
                                 initialCameraPosition={{  // 初始化位置
                                     target: {
                                         latitude: 31.020923,
                                         longitude: 121.432887,
+                                        // latitude: this.state.initial_latitude,
+                                        // longitude: this.state.initial_longitude,
                                     },
-                                    zoom: 17.5,
+                                    zoom: this.state.initial_zoom_level,
                                     // southwest: {
                                     //     latitude: 30.020923,
                                     //     longitude: 122.432887
@@ -85,7 +118,7 @@ class Historycard extends Component {
 
                                 }}
 
-                                zoomControlsEnabled={false} // 放大缩小按钮
+                                // zoomControlsEnabled={false} // 放大缩小按钮
                                 scrollGesturesEnabled={false}
                                 compassEnabled={false}
                                 myLocationEnabled={false}
@@ -108,12 +141,12 @@ class Historycard extends Component {
                                 <Marker
                                     key={'end'}
                                     icon={require("../example/images/point.png")}
-                                    position={this.state.points[this.state.points.length-1]}
+                                    position={this.state.points[this.state.points.length - 1]}
                                 />
                             </MapView>
                         </AspectRatio>
                         <Text mt={0.02 * w} color="gray.400" bold size="xl">
-                            {this.date}  {this.location}  上海交通大学
+                            {this.date} {this.location} 上海交通大学
                         </Text>
                     </Box>
                 )}
