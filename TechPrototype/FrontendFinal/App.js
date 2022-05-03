@@ -15,6 +15,7 @@ import {Platform} from "react-native";
 import HomeScreen from "./screens/HomeScreen";
 import {PageSelectProvider} from "./utils/SwitchPage";
 import MapScreen from "./screens/MapScreen";
+import MapDetailInfo from "./components/MapDetailInfo";
 
 // Define the config
 const config = {
@@ -39,6 +40,7 @@ export default function App() {
         'personal':<PersonalScreen/>,
         'detail':<DetailScreen/>,
         'map':<MapScreen/>,
+        'mapDetailInfo':<MapDetailInfo/>,
     }
 
 

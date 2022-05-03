@@ -21,6 +21,7 @@ import moment from "moment";
 import DateRangePicker from "react-native-daterange-picker";
 import MultiSelect from 'react-native-multiple-select';
 import {storage} from "../utils/Storage";
+import {getTridByUid} from "../utils/FootPrint"
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
@@ -73,10 +74,13 @@ export default class extends React.Component {
             displayedDate: moment(),
 
             // location select
-            selectedItems : [],
+            selectedItems: [],
+            trace_arr: [],
         };
     }
+
     uid = null;  // 当前登录用户的 uid
+
 
     componentDidMount() {
         // 取 uid
@@ -84,6 +88,18 @@ export default class extends React.Component {
             // TODO：注意此时是异步返回，需要在里面继续通过 uid 查找所有轨迹
             this.uid = data;
             console.log("Footprint History: get uid ", this.uid);
+            getTridByUid(this.uid)
+                .then(
+                    res => {
+                        // alert("成功!");
+                        console.log('SUCCESS IN getTridByUid return!', res);
+                        this.setState({trace_arr: res})
+                    }
+                )
+                .catch(err => {
+                        console.log('ERROR IN getTridByUid return!', result);
+                    }
+                )
         })
     }
 
@@ -93,11 +109,14 @@ export default class extends React.Component {
         this.setState({
             ...dates,
         });
+
     };
 
     // location select
     onSelectedItemsChange = selectedItems => {
-        this.setState({ selectedItems });
+        this.setState({selectedItems},()=>{
+
+        });
     };
 
     // async componentDidMount()
@@ -118,22 +137,25 @@ export default class extends React.Component {
     //     }
     // }
     render() {
-        const { startDate, endDate, displayedDate, selectedItems } = this.state;
+        const {startDate, endDate, displayedDate, selectedItems} = this.state;
         console.log(startDate, endDate);
+        console.log('test for trace_arr:', this.trace_arr);
         return (
             <View style={{flex: 1}}>
                 <Header_FootPrint/>
-                <View >
+                <View>
                     <MultiSelect
                         hideTags
                         items={items}
                         uniqueKey="id"
-                        ref={(component) => { this.multiSelect = component }}
+                        ref={(component) => {
+                            this.multiSelect = component
+                        }}
                         onSelectedItemsChange={this.onSelectedItemsChange}
                         selectedItems={selectedItems}
                         selectText="Pick region"
                         searchInputPlaceholderText="Search location..."
-                        onChangeInput={ (text)=> console.log(text)}
+                        onChangeInput={(text) => console.log(text)}
                         // altFontFamily="ProximaNova-Light"
                         tagRemoveIconColor="gray"
                         tagBorderColor="gray"
@@ -145,11 +167,11 @@ export default class extends React.Component {
                         // TODO: 1. Tag 内容似乎只支持英文字母，不支持中文字符
                         //       2. 修改颜色
 
-                        searchInputStyle={{ color: '#CCC' }}
+                        searchInputStyle={{color: '#CCC'}}
                         submitButtonColor="gray"
                         submitButtonText="Submit"
                     />
-                    <View >
+                    <View>
                         {this.multiSelect && this.multiSelect.getSelectedItemsExt(selectedItems)}
                     </View>
                 </View>
@@ -176,8 +198,11 @@ export default class extends React.Component {
                             }}>
                     <Flex direction="column" margin="auto" justifyContent="center">
                         {
-                            trid.map((TRID) => {
-                                    return <Historycard id={TRID}/>
+                            // trid.map((TRID) => {
+                            //         return <Historycard id={TRID}/>
+                            //     }
+                            this.state.trace_arr.map((tmp) => {
+                                    return <Historycard id={tmp.trid}/>
                                 }
                             )
                         }
@@ -190,7 +215,7 @@ export default class extends React.Component {
                     </Box>
                 </ScrollView>
 
-                <Footer />
+                <Footer/>
             </View>
         );
     }
@@ -205,13 +230,13 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 10,
         paddingTop: 2.5,
-        marginLeft:10,
+        marginLeft: 10,
         borderColor: 'gray',
-        borderWidth:1,
-        borderRadius:10,
-        width:'35%',
-        height:30,
+        borderWidth: 1,
+        borderRadius: 10,
+        width: '35%',
+        height: 30,
         fontWeight: 'bold',
-        fontSize:'15',
+        fontSize: '15',
     },
 });

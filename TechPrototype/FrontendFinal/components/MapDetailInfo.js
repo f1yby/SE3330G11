@@ -15,7 +15,7 @@ import {
     AspectRatio,
     Stack,
     Icon,
-    Pressable,
+    Pressable, Avatar,
 } from 'native-base';
 import {
     Dimensions,
@@ -27,11 +27,12 @@ import {
 import AntDesign from "react-native-vector-icons/AntDesign"
 import {MapView, Polyline} from "react-native-amap3d";
 import {AMapSdk} from "../lib/src";
+import Header from "./Header";
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
-
+import {PageSelectProvider} from "../utils/SwitchPage";
 const line1 = [
     {latitude: 40.006901, longitude: 116.097972},
     {latitude: 41.006901, longitude: 116.597972},
@@ -50,8 +51,7 @@ const line3 = [
 ];
 
 
-const MapDetailInfo = () => {
-
+const MapDetailInfo = (props) => {
     const [liked, setliked] = React.useState(0);
     const [collected, setColleted] = React.useState(0);
 
@@ -63,8 +63,23 @@ const MapDetailInfo = () => {
             })
         );
     }, []);
-
+    console.log("TEST!!!",props.points);
     return <Box alignItems="center" h={h * 1.3}>
+        <PageSelectProvider.Consumer>
+            {({Page, SelectPage}) => (
+                <Avatar
+                    ml="5%"
+                    source={{
+                        uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    }}
+                    alt="image"
+                    size={w * 0.1}
+                    onTouchEnd={() => {
+                        SelectPage('history')
+                    }}
+                />
+            )}
+        </PageSelectProvider.Consumer>
         <Box width="100%" overflow="hidden"
             //   _dark={{
             //   borderColor: "coolGray.600",
@@ -100,15 +115,15 @@ const MapDetailInfo = () => {
                     style={{height: "65%"}}
 
                 >
-                    <Polyline width={5} color="rgba(255, 0, 0, 0.5)" points={line1}/>
-                    <Polyline width={5} points={line2} dotted/>
-                    <Polyline
-                        width={5}
-                        colors={["#f44336", "#2196f3", "#4caf50"]}
-                        onPress={() => alert("onPress")}
-                        points={line3}
-                        gradient
-                    />
+                    <Polyline width={5} color="rgba(255, 0, 0, 0.5)" points={props.points}/>
+                    {/*<Polyline width={5} points={line2} dotted/>*/}
+                    {/*<Polyline*/}
+                    {/*    width={5}*/}
+                    {/*    colors={["#f44336", "#2196f3", "#4caf50"]}*/}
+                    {/*    onPress={() => alert("onPress")}*/}
+                    {/*    points={line3}*/}
+                    {/*    gradient*/}
+                    {/*/>*/}
                 </MapView>
             </Stack>
         </Box>

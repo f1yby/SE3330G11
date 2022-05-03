@@ -1,3 +1,4 @@
+//社交界面里面的详细信息
 import React, {Component} from 'react';
 import {
     Container,
