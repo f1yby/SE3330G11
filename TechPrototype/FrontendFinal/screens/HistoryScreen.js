@@ -12,7 +12,6 @@ import {Dimensions} from 'react-native';
 import HistoryCard from "../components/Historycard";
 import Footer from '../components/Footer';
 import Header_FootPrint from "../components/Header";
-import {addPoints, askTraceByTrid, convertTracePoints2ArrJSON} from "../example/components/Position"
 
 import {StyleSheet, Button} from "react-native";
 import Historycard from "../components/Historycard";
@@ -21,16 +20,16 @@ import moment from "moment";
 import DateRangePicker from "react-native-daterange-picker";
 import MultiSelect from 'react-native-multiple-select';
 import {storage} from "../utils/Storage";
-import {getTridByUid} from "../utils/FootPrint"
+import {getTridByUid, getTraceByUidAndLocation, getTraceByUidAndDatePeriodAndLocation, getTraceByUidAndDatePeriod} from "../utils/FootPrint";
+import config from "../config";
+import dedupe from "dedupe";
+
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
 
 const bottom = 0.1 * h;
-const trid = [380, 400, 560, 580];
-const sid = 666058, tid = 519609448;
-
 
 // select location data
 const items = [{
@@ -71,10 +70,15 @@ export default class extends React.Component {
             // date range select
             startDate: null,
             endDate: null,
+            startDate_str: "",
+            endDate_str: "",
             displayedDate: moment(),
 
             // location select
-            selectedItems: [],
+            allLocations: [],  // 拿回所有 trace 时记录所有 location 并去除重复
+            selectedItems: [],  // 每次依据返回的足迹中对应地点信息更新
+
+            // traces
             trace_arr: [],
         };
     }
@@ -93,7 +97,13 @@ export default class extends React.Component {
                     res => {
                         // alert("成功!");
                         console.log('SUCCESS IN getTridByUid return!', res);
-                        this.setState({trace_arr: res})
+                        // 拿回所有 trace 时记录所有 location 并去除重复
+                        const allLocations = res.map((trace)=>{
+                            return {location: trace.location};
+                        });
+                        console.log('allLocations ', allLocations);
+                        let dedupe = require('dedupe');
+                        this.setState({trace_arr: res, allLocations: dedupe(allLocations),  });
                     }
                 )
                 .catch(err => {
@@ -103,17 +113,101 @@ export default class extends React.Component {
         })
     }
 
-    filterByDateRange(){
-        const {startDate, endDate} = this.state;
-        const t1 = startDate.format("YYYY-MM-DD");
+    updateTraces(startT, endT){
+        const {startDate, endDate, selectedItems} = this.state;
+        // 检查是否按时间筛选
+        const timeFilter = (startDate !== null && endDate !== null);
+        // 检查是否按地点筛选
+        const locationFilter = (selectedItems.length !== 0);
 
+        if(!timeFilter && !locationFilter){
+            getTridByUid(this.uid)
+                .then(
+                    res => {
+                        console.log('SUCCESS IN getTridByUid ', res);
+                        this.setState({trace_arr: res})
+                    }
+                )
+                .catch(err => {
+                        console.log('ERROR IN getTridByUid ', err);
+                    }
+                );
+        } else if(timeFilter && !locationFilter){
+            getTraceByUidAndDatePeriod(this.uid, startT, endT)
+                .then(
+                    res => {
+                        this.setState({trace_arr: res})
+                    }
+                )
+                .catch(err => {
+                        console.log('ERROR IN getTraceByUidAndDatePeriod', err);
+                    }
+                );
+        } else if(!timeFilter && locationFilter){
+            const location = this.state.selectedItems[0];
+            console.log("BEFORE getTraceByUidAndLocation",this.state.selectedItems);
+            console.log("BEFORE getTraceByUidAndLocation",location);
+            getTraceByUidAndLocation(this.uid, location)
+                .then(
+                    res => {
+                        this.setState({trace_arr: res})
+                    }
+                )
+                .catch(err => {
+                        console.log('ERROR IN getTraceByUidAndLocation', err);
+                    }
+                );
+        } else {
+            const location = this.state.selectedItems[0];
+
+            getTraceByUidAndDatePeriodAndLocation(this.uid, startT, endT, location)
+                .then(
+                    res => {
+                        this.setState({trace_arr: res})
+                    }
+                )
+                .catch(err => {
+                        console.log('ERROR IN getTraceByUidAndDatePeriodAndLocation', err);
+                    }
+                );
+
+        }
+
+
+
+
+    }
+
+
+    clearDateRange(){
+        this.setState({
+            startDate: null,
+            endDate: null,
+            startDate_str: "",
+            endDate_str: "",
+            displayedDate: moment(),
+        });
+    }
+
+    filterByDateRange() {
+        const {startDate, endDate, trace_arr} = this.state;
+        if(startDate === null || endDate === null) return;
+        const t1 = startDate.format(config.dateFormat);
+        const t2 = endDate.format(config.dateFormat);
         // 分别比较与基准日期相差的天数
-        moment("2019-02-01").diff(moment("2019-01-01"),'days');
+        const startT = startDate.diff(moment(config.baseDate), 'days');
+        const endT = endDate.diff(moment(config.baseDate), 'days');
 
-        const t2 = endDate.format("YYYY-MM-DD");
-        console.log("开始日期：",t1);
-        console.log("结束日期：",t2);
-        console.log("比较：",moment(t2).isBefore(t1));
+        console.log("开始日期：", t1, startT);
+        console.log("结束日期：", t2, endT);
+
+        this.updateTraces(startT, endT);
+
+        this.setState({
+            startDate_str: t1,
+            endDate_str: t2,
+        });
+
     }
 
 
@@ -121,74 +215,85 @@ export default class extends React.Component {
     setDates = (dates) => {
         this.setState({
             ...dates,
+        }, ()=>{
+            this.filterByDateRange();
         });
-
     };
 
     // location select
     onSelectedItemsChange = selectedItems => {
         this.setState({selectedItems},()=>{
-
+            const {startDate, endDate} = this.state;
+            const startT = (startDate === null || endDate === null) ? -1 :startDate.diff(moment(config.baseDate), 'days');
+            const endT = (startDate === null || endDate === null) ? -1 : endDate.diff(moment(config.baseDate), 'days');
+            this.updateTraces(startT, endT);
         });
     };
 
-    // async componentDidMount()
-    // {
-    //     for (var i = 0; i < trid.length; i++) {
-    //         askTraceByTrid(sid, tid, trid[i])
-    //             .then(
-    //             res => {
-    //                 alter("成功!");
-    //                 console.log('History 获取成功', res);
-    //                 this.setState({points: [...points, convertTracePoints2ArrJSON(res.data.tracks[0].points)]});
-    //             }
-    //         )
-    //             .catch(err => {
-    //                 console.log('History 获取失败', result);
-    //             }
-    //         )
-    //     }
-    // }
     render() {
-        const {startDate, endDate, displayedDate, selectedItems} = this.state;
+        const {trace_arr, startDate, endDate, startDate_str, endDate_str, displayedDate, selectedItems, allLocations} = this.state;
         console.log(startDate, endDate);
-        console.log('test for trace_arr:', this.trace_arr);
+        console.log('test for trace_arr:', trace_arr);
+        const dateRange = (startDate_str !== "") ? <Text style={{color:'gray'}}>{startDate_str} 至 {endDate_str}</Text> : <Text style={{color:'gray'}}>按照时间区间筛选足迹</Text>
         return (
             <View style={{flex: 1}}>
                 <Header_FootPrint/>
                 <View>
+                    {/*TODO:多选*/}
+                    {/*<MultiSelect*/}
+                    {/*    hideTags*/}
+                    {/*    items={allLocations}*/}
+                    {/*    uniqueKey="location"*/}
+                    {/*    ref={(component) => {*/}
+                    {/*        this.multiSelect = component*/}
+                    {/*    }}*/}
+                    {/*    onSelectedItemsChange={this.onSelectedItemsChange}*/}
+                    {/*    selectedItems={selectedItems}*/}
+                    {/*    selectText="    按照地点筛选足迹"*/}
+                    {/*    searchInputPlaceholderText="搜索地点..."*/}
+                    {/*    onChangeInput={(text) => console.log(text)}*/}
+                    {/*    // altFontFamily="ProximaNova-Light"*/}
+                    {/*    tagRemoveIconColor="gray"*/}
+                    {/*    tagBorderColor="gray"*/}
+                    {/*    tagTextColor="gray"*/}
+                    {/*    selectedItemTextColor="gray"*/}
+                    {/*    selectedItemIconColor="gray"*/}
+                    {/*    itemTextColor="#000"*/}
+                    {/*    displayKey="location"*/}
+
+                    {/*    // TODO: 1. Tag 内容似乎只支持英文字母，不支持中文字符*/}
+                    {/*    //       2. 修改颜色*/}
+
+                    {/*    searchInputStyle={{color: '#CCC'}}*/}
+                    {/*    submitButtonColor="gray"*/}
+                    {/*    submitButtonText="确定"*/}
+                    {/*/>*/}
                     <MultiSelect
-                        hideTags
-                        items={items}
-                        uniqueKey="id"
+                        // TODO: 解决无法不显示 tag 的问题
+                        single={true}
+                        hideTags={true}
+                        hideSubmitButton={true}
+                        items={allLocations}
+                        uniqueKey="location"
                         ref={(component) => {
                             this.multiSelect = component
                         }}
                         onSelectedItemsChange={this.onSelectedItemsChange}
                         selectedItems={selectedItems}
-                        selectText="Pick region"
-                        searchInputPlaceholderText="Search location..."
+                        selectText="    按照地点筛选足迹"
+                        searchInputPlaceholderText="搜索地点..."
                         onChangeInput={(text) => console.log(text)}
-                        // altFontFamily="ProximaNova-Light"
-                        tagRemoveIconColor="gray"
-                        tagBorderColor="gray"
-                        tagTextColor="gray"
                         selectedItemTextColor="gray"
                         selectedItemIconColor="gray"
                         itemTextColor="#000"
-                        displayKey="name"
-
-                        // TODO: 1. Tag 内容似乎只支持英文字母，不支持中文字符
-                        //       2. 修改颜色
-
+                        displayKey="location"
                         searchInputStyle={{color: '#CCC'}}
-                        submitButtonColor="gray"
-                        submitButtonText="Submit"
                     />
                     <View>
                         {this.multiSelect && this.multiSelect.getSelectedItemsExt(selectedItems)}
                     </View>
                 </View>
+
 
                 <DateRangePicker
                     onChange={this.setDates}
@@ -198,10 +303,14 @@ export default class extends React.Component {
                     presetButtons={true}
                     range
                 >
-                    <View style={styles.button}>
-                        <Text style={{color: 'gray'}}>Select date range</Text>
+                    <View>
+                        <View style={styles.button}>
+                            <Text style={{color: 'gray'}}>{dateRange}</Text>
+                        </View>
                     </View>
+
                 </DateRangePicker>
+
 
                 <ScrollView width="100%" mt="0" mb={0.1 * h} height={h * 0.8}
                             _contentContainerStyle={{
@@ -215,8 +324,8 @@ export default class extends React.Component {
                             // trid.map((TRID) => {
                             //         return <Historycard id={TRID}/>
                             //     }
-                            this.state.trace_arr.map((tmp) => {
-                                    return <Historycard id={tmp.trid}/>
+                            this.state.trace_arr.map((trace) => {
+                                    return <Historycard id={trace.trid} trace={trace}/>
                                 }
                             )
                         }
@@ -244,11 +353,11 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 10,
         paddingTop: 2.5,
-        marginLeft: 10,
+        margin: 10,
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 10,
-        width: '35%',
+        // width: '80%',
         height: 30,
         fontWeight: 'bold',
         fontSize: '15',

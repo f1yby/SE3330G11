@@ -348,6 +348,9 @@ export default class extends React.Component {
                     .then(res => {
                         console.log("upLoadTrace:addPoints", res);
                         alert("足迹上传成功，trid "+ tmp_trid);
+
+                        // TODO: 上传足迹有关时间地点以及 trid 信息进入数据库
+
                     })
                     .catch(err => {
                         console.log('upLoadTrace:addPoints 失败', err);
