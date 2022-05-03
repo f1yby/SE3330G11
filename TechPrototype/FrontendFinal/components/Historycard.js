@@ -56,6 +56,10 @@ class Historycard extends Component {
         console.log("MYTEST:", this.state.points);
         this.date = moment(config.baseDate).add(this.props.trace.date,"days").format(config.dateFormat);
         this.location = this.props.trace.location;
+        const centerLatitude = Number(this.props.trace.centerLatitude);
+        const centerLongitude = Number(this.props.trace.centerLongitude);
+        const zoom = Number(this.props.trace.zoom);
+        const hasInitPos = (centerLatitude!==null);
         //TODO: 修复bug 显示undefined
         return <PageSelectProvider.Consumer>
             {({Page, SelectPage, Props}) =>
@@ -70,10 +74,10 @@ class Historycard extends Component {
                             <MapView
                                 initialCameraPosition={{  // 初始化位置
                                     target: {
-                                        latitude: 31.020923,
-                                        longitude: 121.432887,
+                                        latitude: centerLatitude,
+                                        longitude: centerLongitude,
                                     },
-                                    zoom: 17.5,
+                                    zoom: zoom,
                                     // southwest: {
                                     //     latitude: 30.020923,
                                     //     longitude: 122.432887
@@ -113,7 +117,8 @@ class Historycard extends Component {
                             </MapView>
                         </AspectRatio>
                         <Text mt={0.02 * w} color="gray.400" bold size="xl">
-                            {this.date}  {this.location}  上海交通大学
+                            {this.date}  {this.location}
+                            {/*TODO:添加具体地址位置信息*/}
                         </Text>
                     </Box>
                 )}
