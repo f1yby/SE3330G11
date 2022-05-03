@@ -31,34 +31,6 @@ const h = Dimensions.get('window').height;
 
 const bottom = 0.1 * h;
 
-// select location data
-const items = [{
-    id: '92iijs7yta',
-    name: 'Shanghai'
-}, {
-    id: 'a0s0a8ssbsd',
-    name: 'Zhejiang'
-}, {
-    id: '16hbajsabsd',
-    name: 'Guangdong'
-}, {
-    id: 'nahs75a5sg',
-    name: 'Beijing'
-}, {
-    id: '667atsas',
-    name: 'Xiamen'
-}, {
-    id: 'hsyasajs',
-    name: 'Xinjiang'
-}, {
-    id: 'djsjudksjd',
-    name: '天津'
-}, {
-    id: 'sdhyaysdj',
-    name: '西藏'
-},
-];
-
 export default class extends React.Component {
 
     constructor(props) {

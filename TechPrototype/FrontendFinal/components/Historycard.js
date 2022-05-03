@@ -1,16 +1,11 @@
 import React, {Component} from 'react';
 import {
     Box,
-    Image,
-    HStack,
-    Heading,
     AspectRatio,
-    Stack,
-    Center,
     Text
 } from 'native-base';
 
-import {Dimensions, Platform} from 'react-native';
+import {Dimensions} from 'react-native';
 import {PageSelectProvider} from "../utils/SwitchPage";
 import {MapView, Polyline} from "react-native-amap3d";
 import {askTraceByTrid,convertTracePoints2ArrJSON} from "../example/components/Position"
@@ -31,18 +26,9 @@ class Historycard extends Component {
     location = "";
     state = {
         points: [],
-        initial_zoom_level: 17.5,
-        initial_longitude: 31.020923,
-        initial_latitude: 121.432887,
     }
 
-    componentWillMount() {
-        AMapSdk.init(
-            Platform.select({
-                android: "2b98dcea615041bc691ba73942fddc84",
-                // ios: "186d3464209b74effa4d8391f441f14d",
-            })
-        );
+    componentDidMount() {
         console.log("componentDidMount:", this.props.id);
         this.date = moment(config.baseDate).add(this.props.trace.date, "days").format(config.dateFormat);
         this.location = this.props.trace.location;
@@ -52,7 +38,6 @@ class Historycard extends Component {
                     // alert("成功!");
                     console.log('History SUCCESS', res);
                     let newpoints = convertTracePoints2ArrJSON(res.data.tracks[0].points);
-                    console.log('History SUCCESS2', newpoints);
                     this.setState({points: convertTracePoints2ArrJSON(res.data.tracks[0].points)});
                     // let latitude_min = 180, longitude_min = 180, latitude_max = 0, longitude_max = 0;
                     // for (var i = 0, l = newpoints.length; i < l; i++) {
@@ -78,7 +63,6 @@ class Historycard extends Component {
 
     }
     render() {
-        console.log("MYTEST location!:", this.props.id, this.state.initial_longitude, this.state.initial_latitude, this.state.initial_zoom_level);
         this.date = moment(config.baseDate).add(this.props.trace.date, "days").format(config.dateFormat);
         this.location = this.props.trace.location;
         const centerLatitude = Number(this.props.trace.centerLatitude);
@@ -91,15 +75,13 @@ class Historycard extends Component {
                 (<Box width={0.95 * w} direction="column" margin={0.02 * w} height={0.4 * w}
                       onTouchEnd={
                           () => {
-                              SetProps({points: this.state.points})
+                              SetProps({points: this.state.points, trace: this.props.trace})
                               SelectPage('mapDetailInfo');
                               console.log("go to mapdetail:", Props.points);
                           }
                 }
                     >
                         <AspectRatio w="100%" ratio={{base: 25 / 9, md: 16 / 9}}>
-                            {/*<MyMapView latitude={31.020923} longtitude={121.432887}*/}
-                            {/*    zoom={10} points={this.state.points}/>*/}
                             <MapView
                                 initialCameraPosition={{  // 初始化位置
                                     target: {
