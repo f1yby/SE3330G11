@@ -1,4 +1,26 @@
-import config from "../config";
+import config from "./config";
+
+// addFootPrint 为当前用户（uid）添加足迹
+export const addFootPrint = (uid, trid, date, location) => {
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `${config.backendUrl}/footprint/add?uid=${uid}&trid=${trid}&date=${date}&location=${location}`,
+            {
+                method: 'POST',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS IN addFootPrint ', result);
+
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR IN addFootPrint ', error);
+                reject(error);
+            });
+    });
+};
 
 //根据用户id(uid)查询用户所有的足迹(返回trid数组)
 export const getTridByUid = (uid) => {
@@ -87,4 +109,6 @@ export const getTraceByUidAndDatePeriod = (uid, dateStart, dateEnd) => {
             });
     });
 };
+
+
 

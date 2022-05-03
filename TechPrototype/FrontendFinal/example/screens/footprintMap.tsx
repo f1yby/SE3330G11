@@ -32,6 +32,10 @@ import ActionButton from "react-native-action-button";
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconF5 from 'react-native-vector-icons/FontAwesome5';
 import IconM from 'react-native-vector-icons/MaterialIcons';
+import config from '../../utils/config';
+import moment from "moment";
+import {addFootPrint} from '../../utils/FootPrint';
+import {storage} from '../../utils/Storage';
 
 const sid = 666058;  //service_id
 const tid = 519609448; //terminal_id  for LHQ;
@@ -66,6 +70,12 @@ export default class extends React.Component {
         imgs: [],
         traceNum: 0,
         trid: [],
+
+        // 地理位置
+        address: "",
+        country: "",
+        province: "",
+        district: "",
     };
     watchId?: number | null;
     search = React.createRef();
@@ -229,10 +239,6 @@ export default class extends React.Component {
         });
     }
 
-    moveMapViewToLocation(lng, lat) {
-
-    }
-
 
     handleSearchTextChange(newSearchText: string) {
         console.log('Search Text changed');
@@ -269,7 +275,7 @@ export default class extends React.Component {
     //     );
     // };
 
-    updateLocationOnce() {
+    updateLocationOnce(publishAlert: boolean | undefined) {
         // 获取当前地理位置信息
         const pos = getCurrentPosition()
             .then(res => {
@@ -277,8 +283,14 @@ export default class extends React.Component {
                 const pois = getAddress(res.coords?.longitude, res.coords?.latitude) // 获取经纬度,来获取周围位置
                     .then(res => {
                         const address = res?.regeocode.formatted_address;
-                        alert("您现在位于" + address + "附近");
+                        if(publishAlert !== false) alert("您现在位于" + address + "附近");
                         console.log(address);
+                        this.setState({
+                            address: address,
+                            country: res?.regeocode.addressComponent.country,
+                            province: res?.regeocode.addressComponent.province,
+                            district: res?.regeocode.addressComponent.district,
+                        });
                     })
                     .catch(err => {
                         console.log('逆地理位置编码失败');
@@ -347,9 +359,37 @@ export default class extends React.Component {
                 addPoints(sid, tid, tmp_trid, S_points)
                     .then(res => {
                         console.log("upLoadTrace:addPoints", res);
-                        alert("足迹上传成功，trid "+ tmp_trid);
+                        alert("足迹路线上传高德猎鹰SDK成功，trid "+ tmp_trid);
+                        const pos = getCurrentPosition()
+                            .then(res => {
+                                console.log("getCurrentPosition", res);
+                                const pois = getAddress(res.coords?.longitude, res.coords?.latitude) // 获取经纬度,来获取周围位置
+                                    .then(res => {
+                                        const address = res?.regeocode.formatted_address;
+                                        console.log(address);
+                                        // address: address,
+                                        // country: res?.regeocode.addressComponent.country,
+                                        // province: res?.regeocode.addressComponent.province,
+                                        // district: res?.regeocode.addressComponent.district,
+                                        const province = res?.regeocode.addressComponent.province;
+                                        console.log("FootPrint upload province: ", province);
+                                        const currentDate = moment();
+                                        console.log("FootPrint upload currentDate(moment): ", currentDate);
+                                        const date = currentDate.diff(moment(config.baseDate), 'day');
+                                        console.log("FootPrint upload date: ", date);
 
-                        // TODO: 上传足迹有关时间地点以及 trid 信息进入数据库
+                                        storage.load('uid', (data) => {
+                                            // 上传 uid trid location date
+                                            const p = addFootPrint(data, tmp_trid, date, province);
+                                        });
+                                    })
+                                    .catch(err => {
+                                        console.log('足迹上传数据库失败', err);
+                                    });
+                            })
+                            .catch(err => {
+                                console.log('足迹上传数据库时 当前定位失败');
+                            });
 
                     })
                     .catch(err => {
@@ -368,7 +408,6 @@ export default class extends React.Component {
     finishRecordFootprint() {
         this.clearWatch(this.watchId);
         this.upLoadTrace();
-
         // this.setState({ location: null });
     }
 

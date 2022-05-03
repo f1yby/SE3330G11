@@ -21,7 +21,7 @@ import DateRangePicker from "react-native-daterange-picker";
 import MultiSelect from 'react-native-multiple-select';
 import {storage} from "../utils/Storage";
 import {getTridByUid, getTraceByUidAndLocation, getTraceByUidAndDatePeriodAndLocation, getTraceByUidAndDatePeriod} from "../utils/FootPrint";
-import config from "../config";
+import config from "../utils/config";
 import dedupe from "dedupe";
 
 
@@ -270,8 +270,8 @@ export default class extends React.Component {
                     {/*/>*/}
                     <MultiSelect
                         // TODO: 解决无法不显示 tag 的问题
-                        single={true}
-                        hideTags={true}
+                        single
+                        hideTags
                         hideSubmitButton={true}
                         items={allLocations}
                         uniqueKey="location"
