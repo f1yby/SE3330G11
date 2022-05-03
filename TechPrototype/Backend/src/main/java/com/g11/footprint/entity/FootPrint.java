@@ -20,6 +20,9 @@ public class FootPrint {
 
     private Integer clickCounter;
     //TODO Tags
+    private Integer date;
+
+    private String location;
 
     public void setUser(User user) {
         this.user = user;
@@ -35,5 +38,21 @@ public class FootPrint {
 
     public Integer getTrid() {
         return trid;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Integer getDate() {
+        return date;
+    }
+
+    public void setDate(Integer date) {
+        this.date = date;
     }
 }

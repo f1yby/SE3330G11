@@ -14,4 +14,13 @@ import java.util.List;
 public interface FootPrintRepository extends CrudRepository<FootPrint, Integer> {
     @Query("select f from FootPrint f where f.user=:user")
     List<FootPrint> getAllByUser(User user);
+
+    @Query("select f from FootPrint f where f.user=:user and f.date>=:dateStart and f.date<=:dateEnd and f.location=:location")
+    List<FootPrint> getAllByUserAndDatePeriodAndLocation(User user, Integer dateStart, Integer dateEnd, String location);
+
+    @Query("select f from FootPrint f where f.user=:user and f.location=:location")
+    List<FootPrint> getAllByUserAndLocation(User user, String location);
+
+    @Query("select f from FootPrint f where f.user=:user and f.date>=:dateStart and f.date<=:dateEnd")
+    List<FootPrint> getAllByUserAndDatePeriod(User user, Integer dateStart, Integer dateEnd);
 }

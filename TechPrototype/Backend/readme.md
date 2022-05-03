@@ -21,7 +21,7 @@
 
 **method:** Post
 
-**path:** `user/auth`
+**path:** `/user/auth`
 
 #### param
 
@@ -38,7 +38,7 @@
 
 **method:** Post
 
-**path:** `footprint/add`
+**path:** `/footprint/add`
 
 #### param
 
@@ -49,16 +49,60 @@
 
 **method:** Post
 
-**path:** `footprint/findByUid`
+**path:** `/footprint/findByUid`
 
 #### param
+
 1. uid
 
-**return on success**:`[{'fid'=1,'trid'=1},...]`
+**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai'},...]`
 
+### Find FootPrint By Uid And DatePeriod
+
+**method:** Post
+
+**path:** `/footprint/findByUidAndDatePeriod`
+
+#### param
+
+1. uid
+2. dateStart
+3. dateEnd
+
+**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai'},...]`
+
+### Find FootPrint By Uid And Location
+
+**method:** Post
+
+**path:** `/footprint/findByUidAndLocation`
+
+#### param
+
+1. uid
+2. location
+
+**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai'},...]`
+
+### Find FootPrint By Uid And DatePeriod
+
+**method:** Post
+
+**path:** `/footprint/findByUidAndDatePeriodAndLocation`
+
+#### param
+
+1. uid
+2. dateStart
+3. dateEnd
+4. location
+
+**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai'},...]`
 
 # Frontend Usage
+
 ## User Login and Register
+
 1. In frontend  **utils/User.js**  change **IP address** in fetch to your own.
 2. create Database footprint, add user g11
 3. You need to **register** first, then you can login via account registered
