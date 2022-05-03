@@ -15,6 +15,8 @@ import {PageSelectProvider} from "../utils/SwitchPage";
 import {MapView, Polyline} from "react-native-amap3d";
 import {askTraceByTrid,convertTracePoints2ArrJSON} from "../example/components/Position"
 import {Marker} from "../lib/src";
+import config from "../config";
+import moment from "moment";
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
@@ -25,11 +27,15 @@ class Historycard extends Component {
         super(props);
         // console.log("componentDidMount:", this.props.id);
     }
+    date = "";
+    location = "";
     state = {
         points: []
     }
     async componentDidMount() {
         console.log("componentDidMount:", this.props.id);
+        this.date = moment(config.baseDate).add(this.props.trace.date,"days").format(config.dateFormat);
+        this.location = this.props.trace.location;
         askTraceByTrid(sid, tid, this.props.id)
             .then(
                 res => {
@@ -48,6 +54,8 @@ class Historycard extends Component {
     }
     render() {
         console.log("MYTEST:", this.state.points);
+        this.date = moment(config.baseDate).add(this.props.trace.date,"days").format(config.dateFormat);
+        this.location = this.props.trace.location;
         //TODO: 修复bug 显示undefined
         return <PageSelectProvider.Consumer>
             {({Page, SelectPage, Props}) =>
@@ -93,13 +101,11 @@ class Historycard extends Component {
                                 />
                                 {/*<Polyline width={5} color="rgba(255, 0, 0, 0.5)" points={line1} />*/}
                                 <Marker
-                                    // key={`${this.state.points[0].latitude},${this.state.points[0].longitude}`}
                                     key={'start'}
                                     icon={require("../example/images/point.png")}
                                     position={this.state.points[0]}
                                 />
                                 <Marker
-                                    // key={`${this.state.points[0].latitude},${this.state.points[0].longitude}`}
                                     key={'end'}
                                     icon={require("../example/images/point.png")}
                                     position={this.state.points[this.state.points.length-1]}
@@ -107,7 +113,7 @@ class Historycard extends Component {
                             </MapView>
                         </AspectRatio>
                         <Text mt={0.02 * w} color="gray.400" bold size="xl">
-                            2022.4.16 上海交通大学
+                            {this.date}  {this.location}  上海交通大学
                         </Text>
                     </Box>
                 )}
