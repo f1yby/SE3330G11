@@ -15,9 +15,8 @@ import {PageSelectProvider} from "../utils/SwitchPage";
 import {MapView, Polyline} from "react-native-amap3d";
 import {askTraceByTrid, convertTracePoints2ArrJSON} from "../example/components/Position"
 import {AMapSdk, Marker} from "../lib/src";
-import config from "../config";
+import config from "../utils/config";
 import moment from "moment";
-import MyMapView from "./MyMapView";
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
@@ -89,7 +88,7 @@ class Historycard extends Component {
                 (<Box width={0.95 * w} direction="column" margin={0.02 * w} height={0.4 * w}
                       onTouchEnd={
                           () => {
-                              SetProps({points: this.state.points, })
+                              SetProps({points: this.state.points})
                               SelectPage('mapDetailInfo');
                               console.log("go to mapdetail:", Props.points);
                           }
