@@ -1,13 +1,12 @@
 package com.g11.footprint.repository;
 
-import com.g11.footprint.entity.Comment;
-import com.g11.footprint.entity.User;
+import com.g11.footprint.entity.FootPrintComment;
 import org.springframework.data.repository.CrudRepository;
 
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface CommentRepository extends CrudRepository<Comment, Integer> {
+public interface FootPrintCommentRepository extends CrudRepository<FootPrintComment, Integer> {
 
 }

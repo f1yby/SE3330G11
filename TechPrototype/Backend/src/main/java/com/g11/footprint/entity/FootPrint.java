@@ -3,6 +3,7 @@ package com.g11.footprint.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name="foot_print")
 public class FootPrint {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
