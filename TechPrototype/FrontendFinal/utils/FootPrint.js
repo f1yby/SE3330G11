@@ -1,10 +1,10 @@
 import config from "./config";
 
 // addFootPrint 为当前用户（uid）添加足迹
-export const addFootPrint = (uid, trid, date, location) => {
+export const addFootPrint = (uid, trid, date, location, centerLongitude, centerLatitude, zoom) => {
     return new Promise(function (resolve, reject) {
         fetch(
-            `${config.backendUrl}/footprint/add?uid=${uid}&trid=${trid}&date=${date}&location=${location}`,
+            `${config.backendUrl}/footprint/add?uid=${uid}&trid=${trid}&date=${date}&location=${location}&centerLongitude=${centerLongitude}&centerLatitude=${centerLatitude}&zoom=${zoom}`,
             {
                 method: 'POST',
             },

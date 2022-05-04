@@ -350,9 +350,14 @@ export default class extends React.Component {
                 let points = footprintData.map((position) => {
                     return {
                         location: `${position.coords.longitude.toFixed(6)},${position.coords.latitude.toFixed(6)}`,
-                        locatetime: position.timestamp
+                        locatetime: position.timestamp,
                     }
-                })
+                });
+                const startPoint = footprintData[0];
+                const endPoint = footprintData[footprintData.length-1];
+                const middlePosLongitude =  ((startPoint.coords.longitude + endPoint.coords.longitude)/2.0).toFixed(6);
+                const middlePosLatitude = ((startPoint.coords.latitude + endPoint.coords.latitude)/2.0).toFixed(6);
+                console.log("middlePosLon,Lat:",  middlePosLongitude, middlePosLatitude);
                 // console.log(`~upload: `,footprintData.length);
                 // console.log(`~upload: `,JSON.stringify(points));
                 let S_points = JSON.stringify(points);
@@ -378,9 +383,12 @@ export default class extends React.Component {
                                         const date = currentDate.diff(moment(config.baseDate), 'day');
                                         console.log("FootPrint upload date: ", date);
 
+                                        // TODO: CALCULATE zoom
+                                        const zoom = 12;
+
                                         storage.load('uid', (data) => {
                                             // 上传 uid trid location date
-                                            const p = addFootPrint(data, tmp_trid, date, province);
+                                            const p = addFootPrint(data, tmp_trid, date, province, middlePosLongitude, middlePosLatitude, zoom);
                                         });
                                     })
                                     .catch(err => {

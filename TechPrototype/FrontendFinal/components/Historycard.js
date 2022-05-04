@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import {
     Box,
-    Image,
-    HStack,
-    Heading,
     AspectRatio,
-    Stack,
-    Center,
     Text
 } from 'native-base';
 
@@ -30,50 +25,70 @@ class Historycard extends Component {
     date = "";
     location = "";
     state = {
-        points: []
+        points: [],
     }
-    async componentDidMount() {
+
+    componentDidMount() {
         console.log("componentDidMount:", this.props.id);
-        this.date = moment(config.baseDate).add(this.props.trace.date,"days").format(config.dateFormat);
+        this.date = moment(config.baseDate).add(this.props.trace.date, "days").format(config.dateFormat);
         this.location = this.props.trace.location;
         askTraceByTrid(sid, tid, this.props.id)
             .then(
                 res => {
                     // alert("成功!");
                     console.log('History SUCCESS', res);
-                    let newpoints=convertTracePoints2ArrJSON(res.data.tracks[0].points);
-                    console.log('History SUCCESS2', newpoints);
+                    let newpoints = convertTracePoints2ArrJSON(res.data.tracks[0].points);
                     this.setState({points: convertTracePoints2ArrJSON(res.data.tracks[0].points)});
+                    // let latitude_min = 180, longitude_min = 180, latitude_max = 0, longitude_max = 0;
+                    // for (var i = 0, l = newpoints.length; i < l; i++) {
+                    //     latitude_min = Math.min(latitude_min, newpoints[i].latitude);
+                    //     latitude_max = Math.max(latitude_max, newpoints[i].latitude);
+                    //     longitude_min = Math.min(longitude_min, newpoints[i].longitude);
+                    //     longitude_max = Math.max(longitude_max, newpoints[i].longitude);
+                    // }
+                    // this.initial_long = newpoints[0].latitude;
+                    // this.initial_lati = newpoints[0].longitude;
+                    // this.setState({
+                    //     initial_latitude: (latitude_min + latitude_max) / 2.0,
+                    //     initial_longitude: (longitude_min + longitude_max) / 2.0,
+                    //     initial_zoom_level: 5
+                    // });
+                    // this.forceUpdate();
                 }
             )
             .catch(err => {
-                    console.log('History 获取失败', result);
+                    console.log('History 获取失败', err);
                 }
             )
 
     }
     render() {
-        console.log("MYTEST:", this.state.points);
-        this.date = moment(config.baseDate).add(this.props.trace.date,"days").format(config.dateFormat);
+        this.date = moment(config.baseDate).add(this.props.trace.date, "days").format(config.dateFormat);
         this.location = this.props.trace.location;
+        const centerLatitude = Number(this.props.trace.centerLatitude);
+        const centerLongitude = Number(this.props.trace.centerLongitude);
+        const zoom = Number(this.props.trace.zoom);
+        const hasInitPos = (centerLatitude!==null);
         //TODO: 修复bug 显示undefined
         return <PageSelectProvider.Consumer>
-            {({Page, SelectPage, Props}) =>
+            {({Page, SelectPage, Props, SetProps}) =>
                 (<Box width={0.95 * w} direction="column" margin={0.02 * w} height={0.4 * w}
                       onTouchEnd={
-                        () => {
-                          Props.points = this.state.points;
-                          SelectPage('mapDetailInfo');
-                      }}>
+                          () => {
+                              SetProps({points: this.state.points, trace: this.props.trace})
+                              SelectPage('mapDetailInfo');
+                              console.log("go to mapdetail:", Props.points);
+                          }
+                }
+                    >
                         <AspectRatio w="100%" ratio={{base: 25 / 9, md: 16 / 9}}>
-
                             <MapView
                                 initialCameraPosition={{  // 初始化位置
                                     target: {
-                                        latitude: 31.020923,
-                                        longitude: 121.432887,
+                                        latitude: centerLatitude,
+                                        longitude: centerLongitude,
                                     },
-                                    zoom: 17.5,
+                                    zoom: zoom,
                                     // southwest: {
                                     //     latitude: 30.020923,
                                     //     longitude: 122.432887
@@ -108,12 +123,13 @@ class Historycard extends Component {
                                 <Marker
                                     key={'end'}
                                     icon={require("../example/images/point.png")}
-                                    position={this.state.points[this.state.points.length-1]}
+                                    position={this.state.points[this.state.points.length - 1]}
                                 />
                             </MapView>
                         </AspectRatio>
                         <Text mt={0.02 * w} color="gray.400" bold size="xl">
-                            {this.date}  {this.location}  上海交通大学
+                            {this.date}  {this.location}
+                            {/*TODO:添加具体地址位置信息*/}
                         </Text>
                     </Box>
                 )}
