@@ -99,6 +99,37 @@
 
 **return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai'},...]`
 
+## FootPrintPicture
+
+### Add FootPrint Picture
+
+**method:** Post
+
+**path:** `/footprint/picture/add`
+
+#### param
+
+1. fid
+2. latitude
+3. longitude
+4. pictureUrl
+
+**return on success**:`OK`
+
+**return on failure**:`Err`
+
+### Find FootPrint Picture By Fid
+
+**method:** Post
+
+**path:** `/footprint/picture/findByFid`
+
+#### param
+
+1. fid
+
+**return on success**:`[{'fid'=1,'latitude'='121','longitude'='21','pictureUrl'='www'},...]`
+
 # Frontend Usage
 
 ## User Login and Register
