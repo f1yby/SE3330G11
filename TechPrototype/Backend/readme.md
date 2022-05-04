@@ -44,6 +44,11 @@
 
 1. uid
 2. trid
+3. location
+4. date
+5. centerLatitude
+6. centerLongitude
+7. zoom
 
 ### Find FootPrint By Uid
 
@@ -55,7 +60,7 @@
 
 1. uid
 
-**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai'},...]`
+**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai','centerLatitude'='121','centerLongitude'='22','zoom'='100'},...]`
 
 ### Find FootPrint By Uid And DatePeriod
 
@@ -69,7 +74,7 @@
 2. dateStart
 3. dateEnd
 
-**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai'},...]`
+**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai','centerLatitude'='121','centerLongitude'='22','zoom'='100'},...]`
 
 ### Find FootPrint By Uid And Location
 
@@ -82,7 +87,7 @@
 1. uid
 2. location
 
-**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai'},...]`
+**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai','centerLatitude'='121','centerLongitude'='22','zoom'='100'},...]`
 
 ### Find FootPrint By Uid And DatePeriod
 
@@ -97,7 +102,38 @@
 3. dateEnd
 4. location
 
-**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai'},...]`
+**return on success**:`[{'fid'=1,'trid'=1,'date'=1,'location'='Shanghai','centerLatitude'='121','centerLongitude'='22','zoom'='100'},...]`
+
+## FootPrintPicture
+
+### Add FootPrint Picture
+
+**method:** Post
+
+**path:** `/footprint/picture/add`
+
+#### param
+
+1. fid
+2. latitude
+3. longitude
+4. pictureUrl
+
+**return on success**:`OK`
+
+**return on failure**:`Err`
+
+### Find FootPrint Picture By Fid
+
+**method:** Post
+
+**path:** `/footprint/picture/findByFid`
+
+#### param
+
+1. fid
+
+**return on success**:`[{'fid'=1,'latitude'='121','longitude'='21','pictureUrl'='www'},...]`
 
 # Frontend Usage
 
