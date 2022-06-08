@@ -12,15 +12,13 @@ import java.util.List;
 // CRUD refers Create, Read, Update, Delete
 
 public interface FootPrintRepository extends CrudRepository<FootPrint, Integer> {
-    @Query("select f from FootPrint f where f.user=:user")
-    List<FootPrint> getAllByUser(User user);
+    Iterable<FootPrint> getAllByUserUid(Integer uid);
 
-    @Query("select f from FootPrint f where f.user=:user and f.date>=:dateStart and f.date<=:dateEnd and f.location=:location")
-    List<FootPrint> getAllByUserAndDatePeriodAndLocation(User user, Integer dateStart, Integer dateEnd, String location);
+    @Query("select f from FootPrint f where f.user.uid=:uid and f.date>=:dateStart and f.date<=:dateEnd and f.location=:location")
+    Iterable<FootPrint> getAllByUserUidAndDatePeriodAndLocation(Integer uid, Integer dateStart, Integer dateEnd, String location);
 
-    @Query("select f from FootPrint f where f.user=:user and f.location=:location")
-    List<FootPrint> getAllByUserAndLocation(User user, String location);
+    Iterable<FootPrint> getAllByUserUidAndLocation(Integer uid, String location);
 
-    @Query("select f from FootPrint f where f.user=:user and f.date>=:dateStart and f.date<=:dateEnd")
-    List<FootPrint> getAllByUserAndDatePeriod(User user, Integer dateStart, Integer dateEnd);
+    @Query("select f from FootPrint f where f.user.uid=:uid and f.date>=:dateStart and f.date<=:dateEnd")
+    Iterable<FootPrint> getAllByUserUidAndDatePeriod(Integer uid, Integer dateStart, Integer dateEnd);
 }

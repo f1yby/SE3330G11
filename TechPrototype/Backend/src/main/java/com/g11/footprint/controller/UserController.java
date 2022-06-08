@@ -2,12 +2,9 @@ package com.g11.footprint.controller;
 
 import com.g11.footprint.entity.User;
 import com.g11.footprint.repository.UserRepository;
-import com.g11.footprint.sevice.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 @RequestMapping(path = "/user")
@@ -16,7 +13,10 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping(path = "/add")
-    public @ResponseBody Integer addNewUser(@RequestParam String name, @RequestParam String password, @RequestParam String email, @RequestParam String iconUrl) {
+    public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password, @RequestParam String email, @RequestParam String iconUrl) {
+        if (userRepository.findByName(name).isPresent()) {
+            return "Err";
+        }
         User user = new User();
         user.setName(name);
         user.setPassword(password);
@@ -25,15 +25,15 @@ public class UserController {
         user.setCommentCount(0);
         user.setLikedCount(0);
         userRepository.save(user);
-        return user.getUid();
+        return "Ok";
     }
 
     @PostMapping(path = "/auth")
-    public @ResponseBody Integer checkUser(@RequestParam String name, @RequestParam String password) {
-        return userRepository.auth(name, password).getUid();
+    public @ResponseBody Integer findUserByNameAndPassword(@RequestParam String name, @RequestParam String password) {
+        return userRepository.findByNameAndPassword(name, password).map(User::getUid).orElse(null);
     }
 
-    @GetMapping(path = "/alemaill")
+    @GetMapping(path = "/getAll")
     public @ResponseBody Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }

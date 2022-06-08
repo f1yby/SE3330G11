@@ -142,3 +142,5 @@
 1. In frontend  **config.js**  change **backendUrl** to your own.
 2. create Database footprint, add user g11
 3. You need to **register** first, then you can login via account registered
+
+## 

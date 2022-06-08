@@ -42,27 +42,23 @@ public class FootPrintController {
     }
 
     @PostMapping(path = "/findByUid")
-    public @ResponseBody List<FootPrint> findFootPrintByUid(@RequestParam Integer uid) {
-        Optional<User> user = userRepository.findById(uid);
-        return user.map(value -> footPrintRepository.getAllByUser(value)).orElse(null);
+    public @ResponseBody Iterable<FootPrint> findFootPrintByUid(@RequestParam Integer uid) {
+        return footPrintRepository.getAllByUserUid(uid);
     }
 
     @PostMapping(path = "/findByUidAndDatePeriodAndLocation")
-    public @ResponseBody List<FootPrint> findFootPrintByUidAndDatePeriodAndLocation(@RequestParam Integer uid, @RequestParam Integer dateStart, @RequestParam Integer dateEnd, @RequestParam String location) {
-        Optional<User> user = userRepository.findById(uid);
-        return user.map(value -> footPrintRepository.getAllByUserAndDatePeriodAndLocation(value, dateStart, dateEnd, location)).orElse(null);
+    public @ResponseBody Iterable<FootPrint> findFootPrintByUidAndDatePeriodAndLocation(@RequestParam Integer uid, @RequestParam Integer dateStart, @RequestParam Integer dateEnd, @RequestParam String location) {
+        return footPrintRepository.getAllByUserUid(uid);
     }
 
     @PostMapping(path = "/findByUidAndLocation")
-    public @ResponseBody List<FootPrint> findFootPrintByUidAndLocation(@RequestParam Integer uid, @RequestParam String location) {
-        Optional<User> user = userRepository.findById(uid);
-        return user.map(value -> footPrintRepository.getAllByUserAndLocation(value, location)).orElse(null);
+    public @ResponseBody Iterable<FootPrint> findFootPrintByUidAndLocation(@RequestParam Integer uid, @RequestParam String location) {
+        return footPrintRepository.getAllByUserUidAndLocation(uid, location);
     }
 
     @PostMapping(path = "/findByUidAndDatePeriod")
-    public @ResponseBody List<FootPrint> findFootPrintByUidAndDatePeriod(@RequestParam Integer uid, @RequestParam Integer dateStart, @RequestParam Integer dateEnd) {
-        Optional<User> user = userRepository.findById(uid);
-        return user.map(value -> footPrintRepository.getAllByUserAndDatePeriod(value, dateStart, dateEnd)).orElse(null);
+    public @ResponseBody Iterable<FootPrint> findFootPrintByUidAndDatePeriod(@RequestParam Integer uid, @RequestParam Integer dateStart, @RequestParam Integer dateEnd) {
+        return footPrintRepository.getAllByUserUidAndDatePeriod(uid, dateStart, dateEnd);
     }
 
 }
