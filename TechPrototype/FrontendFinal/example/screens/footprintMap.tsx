@@ -40,6 +40,8 @@ import {storage} from '../../utils/Storage';
 const sid = 666058;  //service_id
 const tid = 519609448; //terminal_id  for LHQ;
 
+let mapView: MapView;
+
 export default class extends React.Component {
 
     state = {
@@ -59,6 +61,10 @@ export default class extends React.Component {
         logs: [],
         location: null,
         mapType: MapType.Standard,
+
+        // 触发移动至此时用户所在位置的动画
+        doAnimate: true,  // 初始值为 true，打开地图后定位到用户所在位置，之后修改为 false
+                            // 需要动画时可直接修改为 true，每相隔 2s 检查一次
 
         // 搜索
         searchText: "",
@@ -575,6 +581,14 @@ export default class extends React.Component {
             this.setState({
                 location: data,
             });
+            if(this.state.doAnimate) {
+                this.handleAnimateToPos(data.coords.latitude, data.coords.longitude);
+                this.setState({
+                    doAnimate: false,
+                });
+                return;
+            }
+            if(this.state.isRecordingFootprint) this.handleAnimateToPos(data.coords.latitude, data.coords.longitude);
         }
         this.setState({
             logs: [
@@ -598,6 +612,27 @@ export default class extends React.Component {
             {item.time} {item.event}: {item.data}
         </Text>
     );
+
+
+    handleAnimateToPos(latitude: any, longitude: any, duration = 20){
+        console.log("Animate to pos, lat: ", latitude, "  lon: ", longitude);
+        mapView?.moveCamera(
+            {
+                target: { latitude: latitude, longitude: longitude },
+            },
+            duration
+        );
+
+        // mapView?.moveCamera(
+        //     {
+        //         tilt: tilt,
+        //         bearing: bearing,
+        //         zoom: zoom,
+        //         target: { latitude: latitude, longitude: longitude },
+        //     },
+        //     duration
+        // );
+    }
 
     render() {
         const {
@@ -627,7 +662,7 @@ export default class extends React.Component {
                         this.handleSearchTextChange(newSearchText)
                     }}
                     onSearchButtonPress={() => {
-                        this.handleSearchButtonPressed()
+                        this.handleSearchButtonPressed();
                     }}
                 />
                 {searchTipsText
@@ -641,6 +676,7 @@ export default class extends React.Component {
                 <MapView
                     style={style.body}
                     {...Object.fromEntries(events.map((i) => [i, this.logger(i)]))}
+                    ref={(ref: MapView) => (mapView = ref)}
                     distanceFilter={10}
                     headingFilter={90}
                     myLocationEnabled={true}
@@ -688,17 +724,25 @@ export default class extends React.Component {
                         return (
                             <View key={index}>
                                 <Marker
-                                    onPress={() => alert("onPress")}  // TODO: 查看足迹详情或图片详情，需要显示所有同一地点的图片吗？
+                                    onPress={() => {
+                                        this.handleAnimateToPos(item.location.coords.latitude, item.location.coords.longitude);
+                                        alert("点击图片！");
+                                    }}  // TODO: 查看足迹详情或图片详情，需要显示所有同一地点的图片吗？
+                                    draggable={false}
                                     position={{
                                         latitude: item.location.coords.latitude,
                                         longitude: item.location.coords.longitude
                                     }}
-                                    icon={{
-                                        uri: item.imgs[0].uri,
-                                        width: 30,
-                                        height: 30,
-                                    }}
-                                />
+                                    // icon={{  // 纯图片
+                                    //     uri: item.imgs[0].uri,
+                                    //     width: 30,
+                                    //     height: 30,
+                                    // }}
+                                >
+                                    <View style={style.imageWindow}>
+                                        <Image style={style.image}  source={{uri: item.imgs[0].uri}} />
+                                    </View>
+                                </Marker>
                                 {/*<Image style={{width: 40, height: 40}} source={{uri: item.uri}} />*/}
                                 {/*<Text>{item.fileName}</Text>*/}
                             </View>
@@ -829,5 +873,22 @@ const style = StyleSheet.create({
         fontSize: 50,
         height: 53,
         color: 'white',
+    },
+    imageWindow: {
+        height: 50,
+        width: 50,
+        backgroundColor:"white",
+        alignItems: "center",
+        textAlign: 'center',
+        borderColor:"white",
+        borderRadius:12,
+    },
+    image: {
+        width: 43,
+        height: 43,
+        alignItems: "center",
+        textAlign: 'center',
+        borderRadius: 10,
+        marginTop: 3.5,
     },
 });
