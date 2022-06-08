@@ -36,6 +36,8 @@ import config from '../../utils/config';
 import moment from "moment";
 import {addFootPrint} from '../../utils/FootPrint';
 import {storage} from '../../utils/Storage';
+// @ts-ignore
+import {ImgTP} from '../../utils/ImgTP'
 
 const sid = 666058;  //service_id
 const tid = 519609448; //terminal_id  for LHQ;
@@ -123,6 +125,14 @@ export default class extends React.Component {
                 const photoMarkers = this.state.photoMarkers;
                 const photoMarker = {imgs: res.assets, location: this.state.location,};
                 this.setState({imgs: res.assets, photoMarkers: [...photoMarkers, photoMarker]});
+
+                const callback = (res: any) => {
+                    console.log("imgTP upload SUCCESS: ", res);
+                }
+
+                // 上传到图床
+                // TODO: 传多张
+                ImgTP(res.assets[0].uri, callback);
             },
         );
     };
@@ -153,6 +163,15 @@ export default class extends React.Component {
                 const photoMarker = {imgs: res.assets, location: this.state.location,};
                 console.log(photoMarker);
                 this.setState({imgs: res.assets, photoMarkers: [...photoMarkers, photoMarker]});
+
+                const callback = (res: any) => {
+
+                    console.log("imgTP upload SUCCESS, url: ", res.data.url);
+                }
+
+                // 上传到图床
+                // TODO: 传多张
+                ImgTP(res.assets[0].uri, callback);
             },
         );
     };
@@ -393,9 +412,20 @@ export default class extends React.Component {
                                         const zoom = 12;
 
                                         storage.load('uid', (data) => {
-                                            // 上传 uid trid location date
+                                            // 上传 uid trid location date，得到 fid
                                             const p = addFootPrint(data, tmp_trid, date, province, middlePosLongitude, middlePosLatitude, zoom);
                                         });
+
+                                        // TODO 上传图片
+                                        // const photoMarkers = this.state.photoMarkers;
+                                        // photoMarkers.map((item, index) => {  // 拍照打卡的图片
+                                        //     // uri: item.imgs[0].uri
+                                        //     // latitude: item.location.coords.latitude,
+                                        //     // longitude: item.location.coords.longitude
+                                        //     // 图片上传至图床，获得图床url
+                                        //
+                                        // })
+
                                     })
                                     .catch(err => {
                                         console.log('足迹上传数据库失败', err);
