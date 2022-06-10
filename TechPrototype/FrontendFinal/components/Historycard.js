@@ -93,7 +93,7 @@ class Historycard extends Component {
                           () => {
                               SetProps({points: this.state.points, trace: this.props.trace, pictures: this.state.pictures, })
                               SelectPage('mapDetailInfo');
-                              console.log("go to mapdetail:", Props.points);
+                              console.log("go to mapdetail:", Props.points, Props.pictures);
                           }
                 }
                     >

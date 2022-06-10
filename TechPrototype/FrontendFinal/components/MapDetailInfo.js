@@ -19,6 +19,7 @@ import Header from "./Header";
 import {PageSelectProvider} from "../utils/SwitchPage";
 import IconON from 'react-native-vector-icons/Ionicons';
 import ActionButton from "react-native-action-button";
+import {Value} from "react-native-reanimated";
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
@@ -78,31 +79,32 @@ const MapDetailInfo = () => {
                                 icon={require("../example/images/point.png")}
                                 position={Props.points[Props.points.length - 1]}
                             />
-                            {Props.pictures.map((item, index) => {  // 拍照打卡的图片
-                                return (
-                                    <View key={index}>
-                                        <Marker
-                                            // onPress={() => {
-                                            //     this.handleAnimateToPos(item.location.coords.latitude, item.location.coords.longitude);
-                                            //     alert("点击图片！");
-                                            // }}  // TODO: 查看足迹详情或图片详情，需要显示所有同一地点的图片吗？
-                                            draggable={false}
-                                            position={{
-                                                latitude: item.latitude,
-                                                longitude: item.longitude
-                                            }}
-                                        >
-                                            <View style={style.imageWindow}>
-                                                <Image style={style.image}  source={item.pictureUrl}
-                                                       // source={{uri: item.pictureUrl}}
-                                                />
-                                            </View>
-                                        </Marker>
-                                        {/*<Image style={{width: 40, height: 40}} source={{uri: item.uri}} />*/}
-                                        {/*<Text>{item.fileName}</Text>*/}
-                                    </View>
-                                );
-                            })}
+                            {/*{Props.pictures.map((item, index) => {  // 拍照打卡的图片*/}
+                            {/*    return (*/}
+                            {/*        <View key={index}>*/}
+                            {/*            <Marker*/}
+                            {/*                // onPress={() => {*/}
+                            {/*                //     this.handleAnimateToPos(item.location.coords.latitude, item.location.coords.longitude);*/}
+                            {/*                //     alert("点击图片！");*/}
+                            {/*                // }}  // TODO: 查看足迹详情或图片详情，需要显示所有同一地点的图片吗？*/}
+                            {/*                draggable={false}*/}
+                            {/*                position={{*/}
+                            {/*                    latitude: Number(item.latitude),*/}
+                            {/*                    longitude: Number(item.longitude),*/}
+                            {/*                }}*/}
+                            {/*            >*/}
+                            {/*                <View style={style.imageWindow}>*/}
+                            {/*                    <Image style={style.image}*/}
+                            {/*                           // source={item.pictureUrl}*/}
+                            {/*                           source={{uri: item.pictureUrl}}*/}
+                            {/*                    />*/}
+                            {/*                </View>*/}
+                            {/*            </Marker>*/}
+                            {/*            /!*<Image style={{width: 40, height: 40}} source={{uri: item.uri}} />*!/*/}
+                            {/*            /!*<Text>{item.fileName}</Text>*!/*/}
+                            {/*        </View>*/}
+                            {/*    );*/}
+                            {/*})}*/}
                         </MapView>
                     </Stack>
                 </Box>
