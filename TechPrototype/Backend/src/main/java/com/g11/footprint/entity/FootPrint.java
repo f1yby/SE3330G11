@@ -1,8 +1,7 @@
 package com.g11.footprint.entity;
 
-import lombok.Setter;
 import lombok.Getter;
-import org.hibernate.annotations.Cascade;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -31,8 +30,10 @@ public class FootPrint {
     private String centerLatitude;
     private String zoom;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fpid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fpid")
     private Set<FootPrintPicture> footPrintPicture;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cid")
+    private Set<FootPrintComment> footPrintComment;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tid")
+    private Set<FootPrintTag> footPrintTag;
 }

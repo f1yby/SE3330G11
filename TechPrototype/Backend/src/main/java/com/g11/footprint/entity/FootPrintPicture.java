@@ -1,7 +1,7 @@
 package com.g11.footprint.entity;
 
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -13,11 +13,8 @@ public class FootPrintPicture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer fpid;
-
-    @ManyToOne
-    @JoinColumn(name = "trid")
-    private FootPrint footPrint;
     private String pictureUrl;
     private String latitude;
     private String longitude;
+
 }
