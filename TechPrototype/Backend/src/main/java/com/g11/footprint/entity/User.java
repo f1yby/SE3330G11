@@ -1,5 +1,6 @@
 package com.g11.footprint.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,13 @@ public class User {
     private Integer likedCount;
     private Integer commentCount;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cid")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "uid")
+    @JsonIgnore
     private Set<FootPrintComment> footPrintComments;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "uid")
+    @JsonIgnore
+    private Set<FootPrint> footPrints;
 }

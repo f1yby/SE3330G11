@@ -1,5 +1,6 @@
 package com.g11.footprint.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ public class FootPrint {
 
     @ManyToOne
     @JoinColumn(name = "uid")
+    @JsonIgnore
     private User user;
     private String content;
     private Integer likedCounter;
@@ -30,10 +32,13 @@ public class FootPrint {
     private String centerLatitude;
     private String zoom;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fpid")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fid")
     private Set<FootPrintPicture> footPrintPicture;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cid")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fid")
     private Set<FootPrintComment> footPrintComment;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tid")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fid")
     private Set<FootPrintTag> footPrintTag;
 }
