@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.swing.text.html.Option;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -31,6 +29,7 @@ public class FootPrintController {
             footPrint.setUser(result.get());
             footPrint.setTrid(trid);
             footPrint.setDate(date);
+            footPrint.setClickCounter(0);
             footPrint.setLocation(location);
             footPrint.setCenterLatitude(centerLatitude);
             footPrint.setCenterLongitude(centerLongitude);

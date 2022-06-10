@@ -9,14 +9,6 @@ public class FootPrintComment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer cid;
 
-    @ManyToOne
-    @JoinColumn(name = "fid")
-    private FootPrint footPrint;
-
-    @ManyToOne
-    @JoinColumn(name = "uid")
-    private User user;
-
     private String content;
 
 }

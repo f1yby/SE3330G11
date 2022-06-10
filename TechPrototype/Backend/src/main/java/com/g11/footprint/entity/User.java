@@ -1,12 +1,10 @@
 package com.g11.footprint.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.Setter;
 import lombok.Getter;
-import org.springframework.stereotype.Service;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,4 +20,7 @@ public class User {
     private String email;
     private Integer likedCount;
     private Integer commentCount;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cid")
+    private Set<FootPrintComment> footPrintComments;
 }
