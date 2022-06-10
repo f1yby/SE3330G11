@@ -16,5 +16,4 @@ public class FootPrintPicture {
     private String pictureUrl;
     private String latitude;
     private String longitude;
-
 }

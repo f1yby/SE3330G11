@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class FootPrintPictureController {
         Optional<FootPrint> footPrintOptional = footPrintRepository.findById(fid);
         if (footPrintOptional.isPresent()) {
             FootPrintPicture footPrintPicture = new FootPrintPicture();
-            FootPrint footPrint=footPrintOptional.get();
+            FootPrint footPrint = footPrintOptional.get();
             footPrintPicture.setPictureUrl(pictureUrl);
             footPrintPicture.setLatitude(latitude);
             footPrintPicture.setLongitude(longitude);
@@ -39,7 +40,7 @@ public class FootPrintPictureController {
     }
 
     @PostMapping(path = "/findAllByFid")
-    public @ResponseBody Set<FootPrintPicture> GetAllByFid(@RequestParam Integer fid) {
+    public @ResponseBody Iterable<FootPrintPicture> GetAllByFid(@RequestParam Integer fid) {
         return footPrintRepository.findById(fid).map(FootPrint::getFootPrintPicture).orElse(null);
     }
 
