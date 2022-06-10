@@ -110,5 +110,27 @@ export const getTraceByUidAndDatePeriod = (uid, dateStart, dateEnd) => {
     });
 };
 
+// /footprint/picture/add
+// addPictureToFootprint
+export const addPictureToFootprint = (fid, latitude, longitude, pictureUrl) => {
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `${config.backendUrl}/footprint/picture/add?fid=${fid}&latitude=${latitude}&longitude=${longitude}&pictureUrl=${pictureUrl}`,
+            {
+                method: 'POST',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS IN addPictureToFootprint ', result);
+
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR IN addPictureToFootprint ', error);
+                reject(error);
+            });
+    });
+};
 
 

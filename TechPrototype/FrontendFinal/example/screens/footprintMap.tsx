@@ -34,7 +34,7 @@ import IconF5 from 'react-native-vector-icons/FontAwesome5';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import config from '../../utils/config';
 import moment from "moment";
-import {addFootPrint} from '../../utils/FootPrint';
+import {addFootPrint, addPictureToFootprint} from '../../utils/FootPrint';
 import {storage} from '../../utils/Storage';
 // @ts-ignore
 import {ImgTP} from '../../utils/ImgTP'
@@ -75,6 +75,7 @@ export default class extends React.Component {
 
         // 拍照打卡
         photoMarkers: [],
+        img_urls: [],
         imgs: [],
         traceNum: 0,
         trid: [],
@@ -122,17 +123,13 @@ export default class extends React.Component {
                 includeBase64: true,
             },
             res => {
+
+                this.uploadPicToImgTP(res);
+
                 const photoMarkers = this.state.photoMarkers;
                 const photoMarker = {imgs: res.assets, location: this.state.location,};
                 this.setState({imgs: res.assets, photoMarkers: [...photoMarkers, photoMarker]});
 
-                const callback = (res: any) => {
-                    console.log("imgTP upload SUCCESS: ", res);
-                }
-
-                // 上传到图床
-                // TODO: 传多张
-                ImgTP(res.assets[0].uri, callback);
             },
         );
     };
@@ -159,22 +156,32 @@ export default class extends React.Component {
             },
             res => {
                 //alert(res.errorCode);
+                this.uploadPicToImgTP(res);
+
                 const photoMarkers = this.state.photoMarkers;
                 const photoMarker = {imgs: res.assets, location: this.state.location,};
                 console.log(photoMarker);
                 this.setState({imgs: res.assets, photoMarkers: [...photoMarkers, photoMarker]});
-
-                const callback = (res: any) => {
-
-                    console.log("imgTP upload SUCCESS, url: ", res.data.url);
-                }
-
-                // 上传到图床
-                // TODO: 传多张
-                ImgTP(res.assets[0].uri, callback);
             },
         );
     };
+
+    uploadPicToImgTP(pic){
+        const callback = (res: any) => {
+            // 由于图床上传响应非常慢 所以只能够先用图片 uri 在用户界面显示
+            // 随后等待上传完毕之后再存储 url
+            // 注意 TODO url 与 uri（photomarker） 的一一对应可能存在异步问题！！！
+            // 此处为实现简单 直接新增一个数组 将 url 存入，默认 url 一一对应 photomarker
+            // 默认短时间内不会一下传多张图片！！！
+            console.log("imgTP upload SUCCESS, url: ", res.data.url);
+            const img_urls = this.state.img_urls;
+            this.setState({img_urls:[...img_urls, res.data.url]});
+        }
+
+        // 上传到图床
+        // TODO: 传多张
+        ImgTP(pic.assets[0].uri, callback);
+    }
 
 
     // 地图类型选择
@@ -413,18 +420,25 @@ export default class extends React.Component {
 
                                         storage.load('uid', (data) => {
                                             // 上传 uid trid location date，得到 fid
-                                            const p = addFootPrint(data, tmp_trid, date, province, middlePosLongitude, middlePosLatitude, zoom);
+                                            const p = addFootPrint(data, tmp_trid, date, province, middlePosLongitude, middlePosLatitude, zoom)
+                                                .then((fid: any) => {
+                                                    // TODO 上传图片
+                                                    console.log("upload trace pictures");
+                                                    const photoMarkers = this.state.photoMarkers;
+                                                    const urls = this.state.img_urls;
+                                                    photoMarkers.map((item, index) => {  // 拍照打卡的图片
+                                                        // uri: item.imgs[0].uri
+                                                        // latitude: item.location.coords.latitude,
+                                                        // longitude: item.location.coords.longitude
+                                                        // 图片上传至图床，获得图床url
+                                                        console.log("uri: ", item.imgs[0].uri, "url: ", urls[index]);
+                                                        addPictureToFootprint(fid, item.location.coords.latitude, item.location.coords.longitude, urls[index]);
+                                                    })
+                                                })
+                                                .catch(err => {
+                                                    console.log('足迹上传后端数据库 uid 获取失败', err);
+                                                });
                                         });
-
-                                        // TODO 上传图片
-                                        // const photoMarkers = this.state.photoMarkers;
-                                        // photoMarkers.map((item, index) => {  // 拍照打卡的图片
-                                        //     // uri: item.imgs[0].uri
-                                        //     // latitude: item.location.coords.latitude,
-                                        //     // longitude: item.location.coords.longitude
-                                        //     // 图片上传至图床，获得图床url
-                                        //
-                                        // })
 
                                     })
                                     .catch(err => {
