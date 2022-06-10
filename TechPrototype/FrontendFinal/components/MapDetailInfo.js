@@ -1,11 +1,11 @@
 //点击历史足迹中的地图进入的详细信息界面
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {
     Box,
     Stack,
 } from 'native-base';
 import {
-    Dimensions,
+    Dimensions, Image,
     ImageBackground, Platform, StyleSheet,
     TouchableOpacity,
     View,
@@ -31,7 +31,10 @@ const MapDetailInfo = () => {
                 // ios: "186d3464209b74effa4d8391f441f14d",
             })
         );
+
     }, []);
+
+
     return <PageSelectProvider.Consumer>
         {({Page, SelectPage, Props}) => (
             <Box alignItems="center" h={h * 1.5}>
@@ -75,6 +78,31 @@ const MapDetailInfo = () => {
                                 icon={require("../example/images/point.png")}
                                 position={Props.points[Props.points.length - 1]}
                             />
+                            {Props.pictures.map((item, index) => {  // 拍照打卡的图片
+                                return (
+                                    <View key={index}>
+                                        <Marker
+                                            // onPress={() => {
+                                            //     this.handleAnimateToPos(item.location.coords.latitude, item.location.coords.longitude);
+                                            //     alert("点击图片！");
+                                            // }}  // TODO: 查看足迹详情或图片详情，需要显示所有同一地点的图片吗？
+                                            draggable={false}
+                                            position={{
+                                                latitude: item.latitude,
+                                                longitude: item.longitude
+                                            }}
+                                        >
+                                            <View style={style.imageWindow}>
+                                                <Image style={style.image}  source={item.pictureUrl}
+                                                       // source={{uri: item.pictureUrl}}
+                                                />
+                                            </View>
+                                        </Marker>
+                                        {/*<Image style={{width: 40, height: 40}} source={{uri: item.uri}} />*/}
+                                        {/*<Text>{item.fileName}</Text>*/}
+                                    </View>
+                                );
+                            })}
                         </MapView>
                     </Stack>
                 </Box>

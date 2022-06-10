@@ -297,7 +297,7 @@ export default class extends React.Component {
                             //         return <Historycard id={TRID}/>
                             //     }
                             this.state.trace_arr.map((trace) => {
-                                    return <Historycard id={trace.trid} trace={trace}/>
+                                    return <Historycard id={trace.trid} trace={trace} fid={trace.fid}/>
                                 }
                             )
                         }

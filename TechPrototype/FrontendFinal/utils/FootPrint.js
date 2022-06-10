@@ -134,3 +134,25 @@ export const addPictureToFootprint = (fid, latitude, longitude, pictureUrl) => {
 };
 
 
+// /footprint/picture/findByFid
+// getPictureUrlByFid
+export const getPictureUrlByFid = (fid) => {
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `${config.backendUrl}/footprint/picture/findByFid?fid=${fid}`,
+            {
+                method: 'POST',
+            },
+        )
+            .then(response => response.json())
+            .then(result => {
+                console.log('SUCCESS IN getPictureUrlByFid ', result);
+
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR IN getPictureUrlByFid ', error);
+                reject(error);
+            });
+    });
+};
