@@ -92,8 +92,8 @@ class Historycard extends Component {
                       onTouchEnd={
                           () => {
                               SetProps({points: this.state.points, trace: this.props.trace, pictures: this.state.pictures, })
-                              SelectPage('mapDetailInfo');
                               console.log("go to mapdetail:", Props.points, Props.pictures);
+                              SelectPage('mapDetailInfo');
                           }
                 }
                     >

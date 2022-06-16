@@ -123,7 +123,7 @@ export default class extends React.Component {
                 includeBase64: true,
             },
             res => {
-
+                if(res.didCancel) return;
                 this.uploadPicToImgTP(res);
 
                 const photoMarkers = this.state.photoMarkers;
@@ -141,6 +141,7 @@ export default class extends React.Component {
                 selectionLimit: 1,
             },
             res => {
+                if(res.didCancel) return;
                 const photoMarkers = this.state.photoMarkers;
                 const photoMarker = {imgs: res.assets, location: this.state.location,};
                 this.setState({imgs: res.assets, photoMarkers: [...photoMarkers, photoMarker]});
@@ -156,8 +157,9 @@ export default class extends React.Component {
             },
             res => {
                 //alert(res.errorCode);
+                console.log("tackPhoto:",res);
+                if(res.didCancel) return;
                 this.uploadPicToImgTP(res);
-
                 const photoMarkers = this.state.photoMarkers;
                 const photoMarker = {imgs: res.assets, location: this.state.location,};
                 console.log(photoMarker);
