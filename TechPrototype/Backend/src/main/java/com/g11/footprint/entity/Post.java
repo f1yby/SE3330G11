@@ -33,6 +33,9 @@ public class Post {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     Set<User> likedUser;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    Set<PostComment> postComments;
 
     public Post() {
     }
@@ -45,5 +48,6 @@ public class Post {
         topic = post.topic;
         tag = post.tag;
         likedUser = post.likedUser;
+        postComments = post.postComments;
     }
 }
