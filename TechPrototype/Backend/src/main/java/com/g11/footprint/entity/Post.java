@@ -1,10 +1,8 @@
 package com.g11.footprint.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javafx.geometry.Pos;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.util.Streamable;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -33,7 +31,7 @@ public class Post {
     String tag;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     Set<User> likedUser;
 
     public Post() {

@@ -12,7 +12,7 @@ public interface FootPrintRepository extends CrudRepository<FootPrint, Integer> 
     Iterable<FootPrint> getAllByUserUid(Integer uid);
 
     @Query("select f from FootPrint f where f.user.uid=:uid and f.date>=:dateStart and f.date<=:dateEnd and f.location=:location")
-    Iterable<FootPrint> getAllByUserUidAndDatePeriodAndLocation(Integer uid, Integer dateStart, Integer dateEnd, String location);
+    Iterable<FootPrint> findAllByUserUidAndDatePeriodAndLocation(Integer uid, Integer dateStart, Integer dateEnd, String location);
 
     Iterable<FootPrint> getAllByUserUidAndLocation(Integer uid, String location);
 

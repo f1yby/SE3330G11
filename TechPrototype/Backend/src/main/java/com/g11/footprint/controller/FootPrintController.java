@@ -17,16 +17,16 @@ import java.util.Optional;
 @RequestMapping(path = "/footprint")
 public class FootPrintController {
     @Autowired
-    private FootPrintRepository footPrintRepository;
+    FootPrintRepository footPrintRepository;
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @PostMapping(path = "/add")
-    public @ResponseBody Integer AddFootPrint(@RequestParam Integer uid, @RequestParam Integer trid, @RequestParam Integer date, @RequestParam String location, @RequestParam String centerLatitude, @RequestParam String centerLongitude, @RequestParam String zoom) {
+    public @ResponseBody String add(@RequestParam Integer uid, @RequestParam Integer trid, @RequestParam Integer date, @RequestParam String location, @RequestParam String centerLatitude, @RequestParam String centerLongitude, @RequestParam String zoom) {
         FootPrint footPrint = new FootPrint();
-        Optional<User> result = userRepository.findById(uid);
-        if (result.isPresent()) {
-            footPrint.setUser(result.get());
+        Optional<User> optionalUser = userRepository.findById(uid);
+        if (optionalUser.isPresent()) {
+            footPrint.setUser(optionalUser.get());
             footPrint.setTrid(trid);
             footPrint.setDate(date);
             footPrint.setLocation(location);
@@ -34,9 +34,9 @@ public class FootPrintController {
             footPrint.setCenterLongitude(centerLongitude);
             footPrint.setZoom(zoom);
             footPrintRepository.save(footPrint);
-            return footPrint.getFid();
+            return "Ok";
         }
-        return null;
+        return "Invalid Uid";
     }
 
     @PostMapping(path = "/findByUid")
@@ -46,7 +46,7 @@ public class FootPrintController {
 
     @PostMapping(path = "/findByUidAndDatePeriodAndLocation")
     public @ResponseBody Iterable<FootPrint> findFootPrintByUidAndDatePeriodAndLocation(@RequestParam Integer uid, @RequestParam Integer dateStart, @RequestParam Integer dateEnd, @RequestParam String location) {
-        return footPrintRepository.getAllByUserUid(uid);
+        return footPrintRepository.findAllByUserUidAndDatePeriodAndLocation(uid, dateStart, dateEnd, location);
     }
 
     @PostMapping(path = "/findByUidAndLocation")

@@ -13,7 +13,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping(path = "/add")
-    public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password, @RequestParam String email, @RequestParam String iconUrl) {
+    public @ResponseBody String add(@RequestParam String name, @RequestParam String password, @RequestParam String email, @RequestParam String iconUrl) {
         if (userRepository.findByName(name).isPresent()) {
             return "Err";
         }
@@ -32,12 +32,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/getAll")
-    public @ResponseBody Iterable<User> getAllUsers() {
+    public @ResponseBody Iterable<User> findAllUsers() {
         return userRepository.findAll();
-    }
-
-    @PostMapping(path = "/search")
-    public @ResponseBody User getByUid(@RequestParam User u) {
-        return u;
     }
 }

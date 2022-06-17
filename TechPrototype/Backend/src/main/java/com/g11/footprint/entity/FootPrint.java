@@ -29,7 +29,8 @@ public class FootPrint {
     private String centerLatitude;
     private String zoom;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinColumn(name = "fid")
     private Set<FootPrintPicture> footPrintPicture;
 }
