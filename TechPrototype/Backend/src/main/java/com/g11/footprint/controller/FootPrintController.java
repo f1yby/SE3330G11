@@ -29,7 +29,6 @@ public class FootPrintController {
             footPrint.setUser(result.get());
             footPrint.setTrid(trid);
             footPrint.setDate(date);
-            footPrint.setClickCounter(0);
             footPrint.setLocation(location);
             footPrint.setCenterLatitude(centerLatitude);
             footPrint.setCenterLongitude(centerLongitude);

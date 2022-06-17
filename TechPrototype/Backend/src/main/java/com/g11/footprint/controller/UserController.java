@@ -22,8 +22,6 @@ public class UserController {
         user.setPassword(password);
         user.setEmail(email);
         user.setIconUrl(iconUrl);
-        user.setCommentCount(0);
-        user.setLikedCount(0);
         userRepository.save(user);
         return "Ok";
     }
