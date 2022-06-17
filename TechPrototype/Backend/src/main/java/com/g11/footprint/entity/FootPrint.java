@@ -22,9 +22,6 @@ public class FootPrint {
     @JoinColumn(name = "uid")
     @JsonIgnore
     private User user;
-    private String content;
-    private Integer likedCounter;
-    private Integer clickCounter;
     //TODO Tags
     private Integer date;
     private String location;
@@ -35,10 +32,4 @@ public class FootPrint {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "fid")
     private Set<FootPrintPicture> footPrintPicture;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fid")
-    private Set<FootPrintComment> footPrintComment;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fid")
-    private Set<FootPrintTag> footPrintTag;
 }

@@ -19,13 +19,10 @@ public class User {
     private String password;
     private String iconUrl;
     private String email;
-    private Integer likedCount;
-    private Integer commentCount;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "uid")
     @JsonIgnore
-    private Set<FootPrintComment> footPrintComments;
+    private Set<Post> post;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "uid")
