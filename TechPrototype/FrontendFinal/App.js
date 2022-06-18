@@ -28,8 +28,8 @@ export const theme = extendTheme({config});
 
 
 export default function App() {
-    //const [Page, SelectPage] = useState('home');
-    const [Page, SelectPage] = useState('release');
+    const [Page, SelectPage] = useState('home');
+    // const [Page, SelectPage] = useState('release');
     const [Props, SetProps] = useState({})
 
     const Pages = {

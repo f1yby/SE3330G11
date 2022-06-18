@@ -38,6 +38,7 @@ import {addFootPrint, addPictureToFootprint} from '../../utils/FootPrint';
 import {storage} from '../../utils/Storage';
 // @ts-ignore
 import {ImgTP} from '../../utils/ImgTP'
+import ReleaseScreen from '../../screens/ReleaseScreen'
 
 const sid = 666058;  //service_id
 const tid = 519609448; //terminal_id  for LHQ;
@@ -47,6 +48,8 @@ let mapView: MapView;
 export default class extends React.Component {
 
     state = {
+        draw_release: false,
+
         // TODO: 状态码: 字符串
         // normal 显示地图页面
         // planRoute  路径规划状态——可添加删去 Marker
@@ -439,6 +442,7 @@ export default class extends React.Component {
 
                                                     // 存 fid
                                                     storage.save('fid', fid);
+                                                    this.setState({draw_release:true});
 
 
                                                 })
@@ -695,7 +699,8 @@ export default class extends React.Component {
             imgs,
             photoMarkers,
             markersEditable,
-            isRecordingFootprint
+            isRecordingFootprint,
+            draw_release
         } = this.state;
         console.log("footprintData: ", footprintData);
         const events = ["onLoad", "onPress", "onPressPoi", "onLongPress", "onCameraIdle", "onLocation"];
@@ -704,7 +709,7 @@ export default class extends React.Component {
             <IconMC name="map-marker-off" style={style.actionButtonIcon}/> :
             <IconMC name="map-marker-plus" style={style.actionButtonIcon}/>;
         const buttonRecordFootprintText = isRecordingFootprint ? "结束足迹" : "开始足迹";
-        return (
+        return draw_release ? <ReleaseScreen/> : (
             <View style={style.body}>
                 <SearchBar
                     ref={ref => this.search = ref}

@@ -9,6 +9,9 @@ const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
 const ReleaseSrceen=()=>{
+
+    console.log("1212123")
+
     const pic = [{id:1,
         image:"https://www.yulumi.cn/gl/uploads/allimg/201128/162003D24-2.jpg"},
         {id:2,
@@ -68,13 +71,13 @@ const ReleaseSrceen=()=>{
                     </FormControl>
                     </Center>
                     </Box>
-                    <Box  height={h * 0.62} width={w} _text={{
+                    <Box  height={h * 0.52} width={w} _text={{
                     color: "coolGray.800"
                 }}>
                     <KeyboardAvoidingView>
                         <Input variant="underlined" placeholder="   取一个吸引人的标题吧！" />
                         <Box alignItems="center" w={w}>
-                            <TextArea h={h * 0.49} placeholder="请输入正文，不超过30字……"/>
+                            <TextArea h={h * 0.40} placeholder="请输入正文，不超过30字……"/>
                         </Box>
                     </KeyboardAvoidingView>
                     </Box>
@@ -83,7 +86,7 @@ const ReleaseSrceen=()=>{
                 }}>
                     <Center>
                         <Button  variant="subtle" width="90%" colorScheme="primary" borderRadius="full" _text={{
-                        color:"coolGray.500"}} mt="1%">
+                        color:"coolGray.500"}}  mt="1%">
                                 确认发布
                         </Button>
                     </Center>

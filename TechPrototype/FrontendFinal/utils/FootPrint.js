@@ -9,7 +9,7 @@ export const addFootPrint = (uid, trid, date, location, centerLongitude, centerL
                 method: 'POST',
             },
         )
-            .then(response => response.json())
+            .then(response => response.text())
             .then(result => {
                 console.log('SUCCESS IN addFootPrint ', result);
 
