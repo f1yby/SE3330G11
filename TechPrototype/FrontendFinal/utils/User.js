@@ -41,7 +41,22 @@ export const authUser = (name, password) => {
     });
 };
 
-
+//根据uid获取用户
 export const getUser = (uid) => {
-    
+    return new Promise(function (resolve, reject) {
+        fetch(
+            `${config.backendUrl}/user/findByUid?uid=${uid}`,
+            {
+                method: 'POST',
+            },
+        )
+            .then(result => {
+                console.log('SUCCESS IN AUTH User ', result);
+                resolve(result);
+            })
+            .catch(error => {
+                console.log('ERROR IN AUTH User ', error);
+                reject(error);
+            });
+    });
 }

@@ -1,9 +1,7 @@
 package com.g11.footprint.controller;
 
-<<<<<<< HEAD
-=======
+
 import com.g11.footprint.dto.PostCommentWithUserName;
->>>>>>> 52f96d2da36cc38b36ad140004991e49a2e65bfd
 import com.g11.footprint.dto.PostWithLikedCount;
 import com.g11.footprint.entity.FootPrint;
 import com.g11.footprint.entity.Post;

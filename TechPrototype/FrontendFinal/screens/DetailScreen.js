@@ -8,16 +8,19 @@ import Footer from '../components/Footer';
 import {StyleSheet} from "react-native";
 
 const DetailScreen=(Props)=>{
+    // 此处Props的格式我也不是很清楚qwq，如果不对的话可以根据log改一下
     console.log("get paremeter:", Props);
     return(
         <Box>
             <Header_FootPrint />
-                <DetailNavi/>
+                <DetailNavi />
             <ScrollView style={{height:"74%"}}>
-                <DetailInfo/>
+                <DetailInfo info={Props}/>
             </ScrollView>
         </Box>
     );
 }
 
 export default DetailScreen;
+
+ 

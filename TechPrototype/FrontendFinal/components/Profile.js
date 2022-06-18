@@ -21,11 +21,13 @@ import {Dimensions} from 'react-native';
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
-
-const Profile=()=>{
+//获赞与收藏后端正在改
+const Profile=(props)=>{
     console.log(w);
     console.log(h);
     console.log(0.2 * w);
+    // 此处一下所有传入的信息如果不对的话，根据log进行修改
+    console.log("get Profile data:", props);
     return(
     <Box bg="cyan.400"  width="100%" height={0.4 * h} >
     <VStack space={2} >
@@ -36,10 +38,10 @@ const Profile=()=>{
             <Box justifyContent="space-around">
                 <VStack space={2} >
                     <Text color="white" fontSize="xl" bold>
-                        用户名
+                        {props.info.name}
                     </Text>
                     <Text fontSize="sm" color="white">
-                        足迹账号：XXXXXX
+                        {props.info.uid}
                     </Text>
                 </VStack>
             </Box>
@@ -53,7 +55,7 @@ const Profile=()=>{
             <HStack width={w * 0.4}  height={0.1 * w} flexDirection="row" ml={0.1 * w}>
                 <VStack  width={w * 0.15} flexDirection="column" bold>
                     <Text size="md" color="white">
-                        XX
+                        0
                     </Text>
                     <Text size="md" color="gray.500" margin="auto" bold>
                         关注
@@ -61,7 +63,7 @@ const Profile=()=>{
                 </VStack>
                 <VStack  width={w * 0.15} flexDirection="column" bold>
                     <Text size="md" color="white">
-                        XX
+                        0
                     </Text>
                     <Text size="md" color="gray.500" margin="auto" bold>
                         粉丝
@@ -69,7 +71,7 @@ const Profile=()=>{
                 </VStack>
                 <VStack  width={w * 0.15} flexDirection="column" bold>
                     <Text size="md" color="white">
-                        XX
+                        0
                     </Text>
                     <Text size="md" color="gray.500" margin="auto" bold>
                         获赞与收藏

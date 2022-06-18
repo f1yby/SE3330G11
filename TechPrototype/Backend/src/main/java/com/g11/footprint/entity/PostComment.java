@@ -1,7 +1,6 @@
 package com.g11.footprint.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javafx.geometry.Pos;
 import lombok.Getter;
 import lombok.Setter;
 

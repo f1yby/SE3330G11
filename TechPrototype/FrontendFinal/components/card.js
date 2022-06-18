@@ -13,7 +13,8 @@ const Card = (props) => {
     return <PageSelectProvider.Consumer>
         {({ Page, SelectPage, Props, SetProps}) => (<Box alignItems="center" margin={w * 0.01} onTouchEnd={() => {
             console.log("props:", props);
-            SetProps({info:props});
+            Props = props;
+            // SetProps({Props:props});
             SelectPage('detail');
         }}>
             <Box width={w * 0.45} rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
