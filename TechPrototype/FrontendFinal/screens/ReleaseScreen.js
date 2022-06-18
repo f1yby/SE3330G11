@@ -13,7 +13,7 @@ import {storage} from "../utils/Storage";
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
-const ReleaseSrceen = () => {
+const ReleaseSrceen = (props) => {
 
 
     const [tag, settag] = React.useState("足迹");
@@ -113,6 +113,7 @@ const ReleaseSrceen = () => {
                                 storage.load("fid", (val)=>{
                                     console.log("fid",val);
                                     addPost(Number(val), title, content, tag);
+                                    SelectPage('browse');
                                 });
                                 // console.log("fid",fid);
                                 // if(fid != null)  addPost(Number(fid), title, content, tag);
