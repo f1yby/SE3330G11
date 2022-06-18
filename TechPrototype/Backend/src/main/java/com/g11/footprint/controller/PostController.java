@@ -1,9 +1,9 @@
 package com.g11.footprint.controller;
 
+import com.g11.footprint.dto.PostWithLikedCount;
 import com.g11.footprint.entity.FootPrint;
 import com.g11.footprint.entity.Post;
 import com.g11.footprint.entity.User;
-import com.g11.footprint.dto.PostWithLikedCount;
 import com.g11.footprint.repository.FootPrintRepository;
 import com.g11.footprint.repository.PostRepository;
 import com.g11.footprint.repository.UserRepository;

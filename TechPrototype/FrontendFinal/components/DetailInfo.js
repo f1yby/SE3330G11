@@ -65,6 +65,17 @@ const DetailInfo = () => {
             })
         );
     }, []);
+    
+    function Slide({ data }) {
+      console.log("data:", data);
+      return (
+        <AspectRatio width="100%" height={0.41 * h} justifyContent="center" >
+              <Image source={{
+              uri: "https://img.zcool.cn/community/01193959eeec64a801202b0c23804b.jpg@1280w_1l_2o_100sh.jpg" }} alt="image" 
+            resizeMode="cover"/>
+          </AspectRatio>
+      );
+    }
 
     return <Box alignItems="center" h={h * 1.3}>
         <Box width="100%"  overflow="hidden"

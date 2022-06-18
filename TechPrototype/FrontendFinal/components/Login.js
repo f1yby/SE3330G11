@@ -19,6 +19,7 @@ export class LoginForm extends React.Component{
 
     handleLogin(){
         const {name, password} = this.state;
+        console.log("state: ", this.state);
         if(name === '') {alert("请输入用户名！"); return;}
         if(password === '') {alert("请输入密码！"); return;}
         console.log("handleLogin", name, password);

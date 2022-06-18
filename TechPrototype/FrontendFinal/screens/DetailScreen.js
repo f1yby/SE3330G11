@@ -7,7 +7,8 @@ import Header_FootPrint from '../components/Header';
 import Footer from '../components/Footer';
 import {StyleSheet} from "react-native";
 
-const DetailScreen=()=>{
+const DetailScreen=(Props)=>{
+    console.log("get paremeter:", Props);
     return(
         <Box>
             <Header_FootPrint />

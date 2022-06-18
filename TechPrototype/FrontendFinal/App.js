@@ -16,6 +16,7 @@ import HomeScreen from "./screens/HomeScreen";
 import {PageSelectProvider} from "./utils/SwitchPage";
 import MapScreen from "./screens/MapScreen";
 import MapDetailInfo from "./components/MapDetailInfo";
+import ReleaseSrceen from "./screens/ReleaseScreen";
 
 // Define the config
 const config = {
@@ -27,7 +28,7 @@ export const theme = extendTheme({config});
 
 
 export default function App() {
-    const [Page, SelectPage] = useState('home');
+    const [Page, SelectPage] = useState('release');
     const [Props, SetProps] = useState({})
 
     const Pages = {
@@ -41,6 +42,7 @@ export default function App() {
         'detail': <DetailScreen/>,
         'map': <MapScreen/>,
         'mapDetailInfo': <MapDetailInfo/>,
+        'release': <ReleaseSrceen/>,
     }
 
 
@@ -73,6 +75,8 @@ export default function App() {
 // Color Switch Component
 function ToggleDarkMode() {
     const {colorMode, toggleColorMode} = useColorMode();
+    //改成默认是light模式，没有dark模式
+    // colorMode = "light";
     return (<HStack space={2} alignItems="center">
         <Text>Dark</Text>
         <Switch

@@ -19,6 +19,7 @@ import {
 import {Dimensions} from 'react-native';
 import Footer from '../components/Footer'
 import Profile from '../components/Profile';
+import { storage } from '../utils/Storage';
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
@@ -39,34 +40,48 @@ const PicDisplay = () => {
     </Box>);
 }
 
-const PersonalScreen = () => {
-    const bottom = 0.1 * h;
-    return (<>
-        <View>
-            <Profile/>
-            <ScrollView width="100%" mb={0.1 * h} height={h * 0.5}
-                        _contentContainerStyle={{
-                            mt: "1%", mb: bottom, mr: "0", ml: "0",
-                        }}>
-                <Flex direction="column" margin="2%" justifyContent="center">
-                    <Center>
-                        <Button variant="subtle" width="80%" colorScheme="primary" borderRadius="full" _text={{
-                            color: "coolGray.500"
-                        }}>
-                            点击查看我的足迹历史
-                        </Button>
-                    </Center>
-                    <PicDisplay/>
-                    <PicDisplay/>
-                    <PicDisplay/>
-                    <PicDisplay/>
-                </Flex>
-            </ScrollView>
-            {/* <Footer/> */}
-        </View>
-        <Footer/>
-    </>);
+// const PersonalScreen = () => {
+//     const bottom = 0.1 * h;
+//     return (<>
+//         <View>
+//             <Profile/>
+//             <ScrollView width="100%" mb={0.1 * h} height={h * 0.5}
+//                         _contentContainerStyle={{
+//                             mt: "1%", mb: bottom, mr: "0", ml: "0",
+//                         }}>
+//                 <Flex direction="column" margin="2%" justifyContent="center">
+//                     <Center>
+//                         <Button variant="subtle" width="80%" colorScheme="primary" borderRadius="full" _text={{
+//                             color: "coolGray.500"
+//                         }}>
+//                             点击查看我的足迹历史
+//                         </Button>
+//                     </Center>
+//                     <PicDisplay/>
+//                     <PicDisplay/>
+//                     <PicDisplay/>
+//                     <PicDisplay/>
+//                 </Flex>
+//             </ScrollView>
+//             {/* <Footer/> */}
+//         </View>
+//         <Footer/>
+//     </>);
 
-}
+// }
 
+class PersonalScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        }
+    }
+
+    componentDidMount() {
+        storage.load('uid', (data)=>{
+            this.state.uid = data;
+        })
+    }
+
+}  
 export default PersonalScreen;

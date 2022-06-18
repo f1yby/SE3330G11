@@ -11,8 +11,9 @@ const h = Dimensions.get('window').height;
 
 const Card = (props) => {
     return <PageSelectProvider.Consumer>
-        {({ Page, SelectPage, Props }) => (<Box alignItems="center" margin={w * 0.01} onTouchEnd={() => {
-            Props = {};
+        {({ Page, SelectPage, Props, SetProps}) => (<Box alignItems="center" margin={w * 0.01} onTouchEnd={() => {
+            console.log("props:", props);
+            SetProps({info:props});
             SelectPage('detail');
         }}>
             <Box width={w * 0.45} rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
@@ -24,9 +25,9 @@ const Card = (props) => {
             }}>
                 <Box>
                     <AspectRatio w="100%" ratio={{ base: 3 / 4, md: 16 / 9 }}>
-                        <Image source={{
-                            uri: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"
-                        }} alt="image" />
+                    <Image source={{
+                        uri: props.info.footPrint.footPrintPicture[0].pictureUrl
+                    }} alt="image" />
                     </AspectRatio>
                 </Box>
             </Box>

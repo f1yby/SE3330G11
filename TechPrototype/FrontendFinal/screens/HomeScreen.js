@@ -13,6 +13,7 @@ const height = Dimensions.get('window').height;
 // let {width, height} = Dimensions.get('window');
 
 const HomeScreen = () => {
+    console.log("get home screen!");
     return <PageSelectProvider.Consumer>
         {({Page, SelectPage}) => (<ImageBackground
             style={styles.container}

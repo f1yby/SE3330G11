@@ -1,7 +1,7 @@
 package com.g11.footprint.repository;
 
 import com.g11.footprint.entity.Post;
-import javafx.geometry.Pos;
+//import javafx.geometry.Pos;
 import org.springframework.data.repository.CrudRepository;
 
 public interface PostRepository extends CrudRepository<Post, Integer> {

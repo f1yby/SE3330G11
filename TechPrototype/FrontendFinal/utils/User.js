@@ -30,7 +30,6 @@ export const authUser = (name, password) => {
                 method: 'POST',
             },
         )
-            .then(response => response.json())
             .then(result => {
                 console.log('SUCCESS IN AUTH User ', result);
                 resolve(result);
@@ -41,3 +40,8 @@ export const authUser = (name, password) => {
             });
     });
 };
+
+
+export const getUser = (uid) => {
+    
+}

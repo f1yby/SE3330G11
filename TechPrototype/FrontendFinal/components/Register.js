@@ -19,6 +19,7 @@ export class RegisterForm extends React.Component {
     }
 
     handleRegister(){
+        console.log("handleRegister!");
         const {name, password, email, iconUrl, confirmPassword} = this.state;
         if(name === '') {alert("请输入用户名！"); return;}
         if(password === '') {alert("请输入密码！"); return;}
@@ -41,6 +42,7 @@ export class RegisterForm extends React.Component {
     }
 
     render() {
+        console.log("get here!");
         return(
             <PageSelectProvider>
                 {({Page, SelectPage}) => (<Center w="100%" margin="auto">
