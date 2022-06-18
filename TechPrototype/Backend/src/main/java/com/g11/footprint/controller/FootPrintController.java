@@ -22,7 +22,7 @@ public class FootPrintController {
     UserRepository userRepository;
 
     @PostMapping(path = "/add")
-    public @ResponseBody String add(@RequestParam Integer uid, @RequestParam Integer trid, @RequestParam Integer date, @RequestParam String location, @RequestParam String centerLatitude, @RequestParam String centerLongitude, @RequestParam String zoom) {
+    public @ResponseBody Optional<Integer> add(@RequestParam Integer uid, @RequestParam Integer trid, @RequestParam Integer date, @RequestParam String location, @RequestParam String centerLatitude, @RequestParam String centerLongitude, @RequestParam String zoom) {
         FootPrint footPrint = new FootPrint();
         Optional<User> optionalUser = userRepository.findById(uid);
         if (optionalUser.isPresent()) {
@@ -34,9 +34,9 @@ public class FootPrintController {
             footPrint.setCenterLongitude(centerLongitude);
             footPrint.setZoom(zoom);
             footPrintRepository.save(footPrint);
-            return "Ok";
+            return Optional.ofNullable(footPrint.getFid());
         }
-        return "Invalid Uid";
+        return Optional.empty();
     }
 
     @PostMapping(path = "/findByUid")
