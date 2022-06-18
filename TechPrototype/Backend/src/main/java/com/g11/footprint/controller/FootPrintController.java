@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping(path = "/footprint")
@@ -39,7 +41,9 @@ public class FootPrintController {
             footPrintPicture.setLatitude("90");
             footPrintPicture.setLongitude("0");
             footPrintPicture.setPictureUrl("http://www.sucaijishi.com/uploadfile/2017/0510/20170510104938727.gif");
-            footPrint.getFootPrintPicture().add(footPrintPicture);
+            Set<FootPrintPicture> footPrintPictureSet = new HashSet<>();
+            footPrintPictureSet.add(footPrintPicture);
+            footPrint.setFootPrintPicture(footPrintPictureSet);
             footPrintRepository.save(footPrint);
             return Optional.ofNullable(footPrint.getFid());
         }
