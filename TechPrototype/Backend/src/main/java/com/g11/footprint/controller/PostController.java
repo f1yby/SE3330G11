@@ -41,7 +41,9 @@ public class PostController {
             post.setContent(content);
             post.setFootPrint(optionalFootPrint.get());
             post.setUser(optionalFootPrint.get().getUser());
-            postRepository.save(post);
+            User user = optionalFootPrint.get().getUser();
+            user.getPost().add(post);
+            userRepository.save(user);
             return "Ok";
 
         }
@@ -83,7 +85,7 @@ public class PostController {
 
 
     @RequestMapping(path = "/comment/findAllByPid")
-    public @ResponseBody Iterable<PostCommentWithUserName> findAllCommentsByPid( @RequestParam Integer pid) {
+    public @ResponseBody Iterable<PostCommentWithUserName> findAllCommentsByPid(@RequestParam Integer pid) {
         Optional<Post> optionalPost = postRepository.findById(pid);
         if (optionalPost.isPresent()) {
             LinkedList<PostCommentWithUserName> postCommentWithUserNames = new LinkedList<>();

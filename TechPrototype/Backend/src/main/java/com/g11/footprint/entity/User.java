@@ -19,4 +19,22 @@ public class User {
     private String password;
     private String iconUrl;
     private String email;
+
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    Set<Post> post;
+
+    public User() {
+
+    }
+
+    public User(User user) {
+        uid = user.uid;
+        name = user.name;
+        password = user.password;
+        iconUrl = user.iconUrl;
+        email = user.email;
+        post = user.post;
+    }
 }

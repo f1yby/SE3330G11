@@ -1,5 +1,6 @@
 package com.g11.footprint.controller;
 
+import com.g11.footprint.dto.UserWithLikedCount;
 import com.g11.footprint.entity.User;
 import com.g11.footprint.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/findByUid")
-    public @ResponseBody Optional<User> findByUid(@RequestParam Integer uid) {
-        return userRepository.findById(uid);
+    public @ResponseBody Optional<UserWithLikedCount> findByUid(@RequestParam Integer uid) {
+        return userRepository.findById(uid).map(UserWithLikedCount::new);
     }
 
     @PostMapping(path = "/auth")
