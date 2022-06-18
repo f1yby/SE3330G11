@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Controller
 @RequestMapping(path = "/user")
 public class UserController {
@@ -24,6 +27,11 @@ public class UserController {
         user.setIconUrl(iconUrl);
         userRepository.save(user);
         return "Ok";
+    }
+
+    @PostMapping(path = "/findByUid")
+    public @ResponseBody Optional<User> findByUid(@RequestParam Integer uid) {
+        return userRepository.findById(uid);
     }
 
     @PostMapping(path = "/auth")
