@@ -14,6 +14,7 @@ public class UserWithLikedCount extends User{
     public UserWithLikedCount(User user) {
         super(user);
         liked = 0;
+
         user.getPost().forEach(post -> liked += post.getLikedUser().size());
     }
 }

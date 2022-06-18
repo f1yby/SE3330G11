@@ -45,10 +45,12 @@ class PersonalScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user: [],
         }
     }
 
     componentDidMount() {
+        console.log("PersonalScreen");
         storage.load('uid', (data)=>{
             getUser(data)
             .then(

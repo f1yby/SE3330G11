@@ -418,7 +418,7 @@ export default class extends React.Component {
                                         console.log("FootPrint upload date: ", date);
 
                                         // TODO: CALCULATE zoom
-                                        const zoom = 12;
+                                        const zoom = 14;
 
                                         storage.load('uid', (data) => {
                                             // 上传 uid trid location date，得到 fid
@@ -436,6 +436,11 @@ export default class extends React.Component {
                                                         console.log("uri: ", item.imgs[0].uri, "url: ", urls[index]);
                                                         addPictureToFootprint(fid, item.location.coords.latitude, item.location.coords.longitude, urls[index]);
                                                     })
+
+                                                    // 存 fid
+                                                    storage.save('fid', fid);
+
+
                                                 })
                                                 .catch(err => {
                                                     console.log('足迹上传后端数据库 uid 获取失败', err);

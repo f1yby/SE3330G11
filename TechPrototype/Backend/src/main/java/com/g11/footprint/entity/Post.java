@@ -16,11 +16,9 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @JsonIgnore
     @ManyToOne
     User user;
-
-    @JsonIgnore
+    
     @OneToOne
     FootPrint footPrint;
 

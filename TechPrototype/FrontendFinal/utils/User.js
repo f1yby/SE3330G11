@@ -31,6 +31,7 @@ export const authUser = (name, password) => {
             },
         )
             .then(result => {
+                result = result.text();
                 console.log('SUCCESS IN AUTH User ', result);
                 resolve(result);
             })
@@ -51,6 +52,7 @@ export const getUser = (uid) => {
             },
         )
             .then(result => {
+                result = result.json();
                 console.log('SUCCESS IN AUTH User ', result);
                 resolve(result);
             })

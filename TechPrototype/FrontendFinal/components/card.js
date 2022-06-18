@@ -12,9 +12,11 @@ const h = Dimensions.get('window').height;
 const Card = (props) => {
     return <PageSelectProvider.Consumer>
         {({ Page, SelectPage, Props, SetProps}) => (<Box alignItems="center" margin={w * 0.01} onTouchEnd={() => {
+
             console.log("props:", props);
             Props = props;
             SetProps(props);
+            console.log("props2:", Props);
             SelectPage('detail');
         }}>
             <Box width={w * 0.45} rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{

@@ -5,7 +5,7 @@ import {
 } from 'native-base';
 
 import {Dimensions} from 'react-native';
-import { getAllPost } from "../utils/post";
+import { getAllPost } from "../utils/Post";
 import Footer from "../components/Footer";
 import Header_FootPrint from "../components/Header";
 
@@ -51,61 +51,62 @@ const h = Dimensions.get('window').height;
 
 // 此时暂定的逻辑是取所有的页面
 class BrowseScreen extends React.Component {
-    // constructor(props) {
-    //     super(props);
+    constructor(props) {
+        super(props);
 
-    //     this.state = {
-    //         posts: [],
-    //     };
-    // }
+        this.state = {
+            posts: [],
+        };
+    }
 
-    // componentDidMount() {
-    //     getAllPost()
-    //     .then(
-    //         res => {
-    //             console.log('SUCCESS IN getPost return!', res);
-    //             this.setState({posts: res});
-    //         }
-    //     )
-    //     .catch(err => {
-    //             console.log('ERROR IN getPost return!', result);
-    //         }
-    //     )
-    // }
+    componentDidMount() {
+        getAllPost()
+        .then(
+            res => {
+                console.log('SUCCESS IN getPost return!', res);
+                this.setState({posts: res});
+            }
+        )
+        .catch(err => {
+                console.log('ERROR IN getPost return!', result);
+            }
+        )
+    }
 
     render() {
-        const posts = [{id:1,
-            footPrint: {
-                footPrintPicture:[
-                    {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"},
-                    {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"}
-                ]
-            }
-            },
-            {id:2,
-                footPrint: {
-                    footPrintPicture:[
-                        {pictureUrl: "https://www.yulumi.cn/gl/uploads/allimg/201128/162003D24-2.jpg"},
-                        {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"}
-                    ]
-                }
-            },
-            {id:3,
-                footPrint: {
-                    footPrintPicture:[
-                        {pictureUrl:"https://img.zcool.cn/community/01193959eeec64a801202b0c23804b.jpg@1280w_1l_2o_100sh.jpg"},
-                        {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"}
-                    ]
-                }
-            },
-            {id:4,
-                footPrint: {
-                    footPrintPicture:[
-                        {pictureUrl:"https://img.zcool.cn/community/01193959eeec64a801202b0c23804b.jpg@1280w_1l_2o_100sh.jpg"},
-                        {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"}
-                    ]
-                }
-            }];
+        const {posts} = this.state;
+        // const posts = [{id:1,
+        //     footPrint: {
+        //         footPrintPicture:[
+        //             {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"},
+        //             {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"}
+        //         ]
+        //     }
+        //     },
+        //     {id:2,
+        //         footPrint: {
+        //             footPrintPicture:[
+        //                 {pictureUrl: "https://www.yulumi.cn/gl/uploads/allimg/201128/162003D24-2.jpg"},
+        //                 {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"}
+        //             ]
+        //         }
+        //     },
+        //     {id:3,
+        //         footPrint: {
+        //             footPrintPicture:[
+        //                 {pictureUrl:"https://img.zcool.cn/community/01193959eeec64a801202b0c23804b.jpg@1280w_1l_2o_100sh.jpg"},
+        //                 {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"}
+        //             ]
+        //         }
+        //     },
+        //     {id:4,
+        //         footPrint: {
+        //             footPrintPicture:[
+        //                 {pictureUrl:"https://img.zcool.cn/community/01193959eeec64a801202b0c23804b.jpg@1280w_1l_2o_100sh.jpg"},
+        //                 {pictureUrl: "https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20739.jpg"}
+        //             ]
+        //         }
+        //     }];
 
         return (
             <>

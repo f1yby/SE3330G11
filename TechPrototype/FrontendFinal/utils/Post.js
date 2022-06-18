@@ -9,6 +9,7 @@ export const getAllPost = () => {
             },
         )
             .then(result => {
+                result = result.json();
                 console.log('SUCCESS GET POST FOR USER', result);
                 resolve(result);
             })

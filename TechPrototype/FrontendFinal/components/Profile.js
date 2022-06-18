@@ -55,7 +55,7 @@ const Profile=(props)=>{
             <HStack width={w * 0.4}  height={0.1 * w} flexDirection="row" ml={0.1 * w}>
                 <VStack  width={w * 0.15} flexDirection="column" bold>
                     <Text size="md" color="white">
-                        0
+                        20
                     </Text>
                     <Text size="md" color="gray.500" margin="auto" bold>
                         关注
@@ -63,7 +63,7 @@ const Profile=(props)=>{
                 </VStack>
                 <VStack  width={w * 0.15} flexDirection="column" bold>
                     <Text size="md" color="white">
-                        0
+                        5
                     </Text>
                     <Text size="md" color="gray.500" margin="auto" bold>
                         粉丝
@@ -71,7 +71,7 @@ const Profile=(props)=>{
                 </VStack>
                 <VStack  width={w * 0.15} flexDirection="column" bold>
                     <Text size="md" color="white">
-                        0
+                        {props.info.liked}
                     </Text>
                     <Text size="md" color="gray.500" margin="auto" bold>
                         获赞与收藏

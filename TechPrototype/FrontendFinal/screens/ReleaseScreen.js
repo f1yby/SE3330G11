@@ -26,16 +26,16 @@ const ReleaseSrceen=()=>{
             <View>
                 <Header_FootPrint />
                 <Flex direction="column" width={w} mt="0">
-                    <Box width={w} height={h * 0.2} _text={{
-                    color: "coolGray.800"
-                }}>
-                    <Center>
-                        <Button  variant="subtle" width="90%" colorScheme="primary" borderRadius="full" _text={{
-                    color:"coolGray.500"}} mt="3%">
-                            选择希望上传的足迹
-                        </Button>
-                    </Center>
-                    <Text>中间需要啥？</Text>
+                {/*    <Box width={w} height={h * 0.2} _text={{*/}
+                {/*    color: "coolGray.800"*/}
+                {/*}}>*/}
+                    {/*<Center>*/}
+                    {/*    <Button  variant="subtle" width="90%" colorScheme="primary" borderRadius="full" _text={{*/}
+                    {/*color:"coolGray.500"}} mt="3%">*/}
+                    {/*        选择希望上传的足迹*/}
+                    {/*    </Button>*/}
+                    {/*</Center>*/}
+                    {/*<Text>中间需要啥？</Text>*/}
                     {/* <FlatList  data={pic} numColumns={2}  renderItem={({
                     item
                     }) => <Box width={0.5 * w} height={0.5 * w} >
@@ -46,7 +46,7 @@ const ReleaseSrceen=()=>{
                             </Center>
                         </Box>
                     } keyExtractor={item => item.id * 3} /> */}
-                    </Box>
+                    {/*</Box>*/}
                     <Box width={w} height={h * 0.1} _text={{
                     color: "coolGray.800"
                 }}>
@@ -68,13 +68,13 @@ const ReleaseSrceen=()=>{
                     </FormControl>
                     </Center>
                     </Box>
-                    <Box  height={h * 0.42} width={w} _text={{
+                    <Box  height={h * 0.62} width={w} _text={{
                     color: "coolGray.800"
                 }}>
                     <KeyboardAvoidingView>
                         <Input variant="underlined" placeholder="   取一个吸引人的标题吧！" />
                         <Box alignItems="center" w={w}>
-                            <TextArea h={h * 0.34} placeholder="请输入正文，不超过30字……"/>
+                            <TextArea h={h * 0.49} placeholder="请输入正文，不超过30字……"/>
                         </Box>
                     </KeyboardAvoidingView>
                     </Box>
@@ -90,7 +90,7 @@ const ReleaseSrceen=()=>{
                     </Box>
                 </Flex>
         </View>
-        <Footer/>
+        {/*<Footer/>*/}
       </>
     );
 }
