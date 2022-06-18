@@ -24,7 +24,7 @@ export const getAllPost = () => {
 export const addPost = (fid,title,content,tag) => {
     return new Promise(function (resolve, reject) {
         fetch(
-            `${config.backendUrl}/post/add?fid=${fid}&title=${title}&content=${content}&tag=${tag}`,
+            `${config.backendUrl}/post/add?fid=${fid}&topic=${title}&content=${content}&tag=${tag}`,
             {
                 method: 'POST',
             },
