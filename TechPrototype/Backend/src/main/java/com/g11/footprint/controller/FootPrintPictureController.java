@@ -34,6 +34,7 @@ public class FootPrintPictureController {
             Set<FootPrintPicture> pictureSet = footPrint.getFootPrintPicture();
             if (!footPrintOptional.get().getHavePicture()) {
                 pictureSet.clear();
+                footPrint.setHavePicture(true);
             }
             pictureSet.add(footPrintPicture);
             footPrint.setFootPrintPicture(pictureSet);
