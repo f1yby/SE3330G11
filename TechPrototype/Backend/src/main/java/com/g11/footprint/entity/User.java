@@ -19,13 +19,4 @@ public class User {
     private String password;
     private String iconUrl;
     private String email;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<Post> post;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "uid")
-    @JsonIgnore
-    private Set<FootPrint> footPrints;
 }

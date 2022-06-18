@@ -3,7 +3,6 @@ package com.g11.footprint.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.util.Streamable;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -32,8 +31,11 @@ public class Post {
     String tag;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     Set<User> likedUser;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    Set<PostComment> postComments;
 
     public Post() {
     }
@@ -46,5 +48,6 @@ public class Post {
         topic = post.topic;
         tag = post.tag;
         likedUser = post.likedUser;
+        postComments = post.postComments;
     }
 }

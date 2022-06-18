@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Controller
 @RequestMapping(path = "/user")
 public class UserController {
@@ -13,7 +16,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping(path = "/add")
-    public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password, @RequestParam String email, @RequestParam String iconUrl) {
+    public @ResponseBody String add(@RequestParam String name, @RequestParam String password, @RequestParam String email, @RequestParam String iconUrl) {
         if (userRepository.findByName(name).isPresent()) {
             return "Err";
         }
@@ -26,18 +29,18 @@ public class UserController {
         return "Ok";
     }
 
+    @PostMapping(path = "/findByUid")
+    public @ResponseBody Optional<User> findByUid(@RequestParam Integer uid) {
+        return userRepository.findById(uid);
+    }
+
     @PostMapping(path = "/auth")
     public @ResponseBody Integer findUserByNameAndPassword(@RequestParam String name, @RequestParam String password) {
         return userRepository.findByNameAndPassword(name, password).map(User::getUid).orElse(null);
     }
 
     @GetMapping(path = "/getAll")
-    public @ResponseBody Iterable<User> getAllUsers() {
+    public @ResponseBody Iterable<User> findAllUsers() {
         return userRepository.findAll();
-    }
-
-    @PostMapping(path = "/search")
-    public @ResponseBody User getByUid(@RequestParam User u) {
-        return u;
     }
 }

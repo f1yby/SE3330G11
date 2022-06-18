@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,10 +18,10 @@ import java.util.Set;
 @RequestMapping(path = "/footprint/picture")
 public class FootPrintPictureController {
     @Autowired
-    private FootPrintRepository footPrintRepository;
+    FootPrintRepository footPrintRepository;
 
     @PostMapping(path = "/add")
-    public @ResponseBody String AddFootPrintPicture(@RequestParam Integer fid, @RequestParam String latitude, @RequestParam String longitude, @RequestParam String pictureUrl) {
+    public @ResponseBody String add(@RequestParam Integer fid, @RequestParam String latitude, @RequestParam String longitude, @RequestParam String pictureUrl) {
 
         Optional<FootPrint> footPrintOptional = footPrintRepository.findById(fid);
         if (footPrintOptional.isPresent()) {
@@ -36,12 +36,12 @@ public class FootPrintPictureController {
             footPrintRepository.save(footPrint);
             return "Ok";
         }
-        return "Err";
+        return "Invalid Fid";
     }
 
     @PostMapping(path = "/findAllByFid")
-    public @ResponseBody Iterable<FootPrintPicture> GetAllByFid(@RequestParam Integer fid) {
-        return footPrintRepository.findById(fid).map(FootPrint::getFootPrintPicture).orElse(null);
+    public @ResponseBody Iterable<FootPrintPicture> findAllByFid(@RequestParam Integer fid) {
+        return footPrintRepository.findById(fid).map(FootPrint::getFootPrintPicture).orElse(new HashSet<>());
     }
 
 }
