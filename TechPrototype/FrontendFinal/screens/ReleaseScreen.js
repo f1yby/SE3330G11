@@ -113,6 +113,7 @@ const ReleaseSrceen = () => {
                                 storage.load("fid", (val)=>{
                                     console.log("fid",val);
                                     addPost(Number(val), title, content, tag);
+
                                 });
                                 // console.log("fid",fid);
                                 // if(fid != null)  addPost(Number(fid), title, content, tag);

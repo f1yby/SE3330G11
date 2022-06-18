@@ -25,6 +25,11 @@ export class LoginForm extends React.Component{
         console.log("handleLogin", name, password);
         const p = authUser(name, password)
             .then(res => {
+                if(res === ""){
+                    console.log("FAILED 登录验证失败 ", res);
+                    alert("用户名或密码错误！");
+                    return;
+                }
                 if(res.status === 500){
                     console.log("FAILED 登录验证失败 ", res);
                     alert("用户名或密码错误！");
