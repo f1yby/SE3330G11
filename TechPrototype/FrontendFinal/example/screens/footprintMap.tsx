@@ -50,7 +50,6 @@ export default class extends React.Component {
     state = {
         draw_release: false,
 
-        // TODO: 状态码: 字符串
         // normal 显示地图页面
         // planRoute  路径规划状态——可添加删去 Marker
         // planRouteShow  路径规划完成状态——显示规划完成的路径
