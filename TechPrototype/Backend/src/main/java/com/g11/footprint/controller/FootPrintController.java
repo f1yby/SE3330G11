@@ -1,6 +1,7 @@
 package com.g11.footprint.controller;
 
 import com.g11.footprint.entity.FootPrint;
+import com.g11.footprint.entity.FootPrintPicture;
 import com.g11.footprint.entity.User;
 import com.g11.footprint.repository.FootPrintRepository;
 import com.g11.footprint.repository.UserRepository;
@@ -33,6 +34,12 @@ public class FootPrintController {
             footPrint.setCenterLatitude(centerLatitude);
             footPrint.setCenterLongitude(centerLongitude);
             footPrint.setZoom(zoom);
+            footPrint.setHavePicture(false);
+            FootPrintPicture footPrintPicture = new FootPrintPicture();
+            footPrintPicture.setLatitude("90");
+            footPrintPicture.setLongitude("0");
+            footPrintPicture.setPictureUrl("http://www.sucaijishi.com/uploadfile/2017/0510/20170510104938727.gif");
+            footPrint.getFootPrintPicture().add(footPrintPicture);
             footPrintRepository.save(footPrint);
             return Optional.ofNullable(footPrint.getFid());
         }

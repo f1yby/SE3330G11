@@ -25,12 +25,16 @@ public class FootPrintPictureController {
 
         Optional<FootPrint> footPrintOptional = footPrintRepository.findById(fid);
         if (footPrintOptional.isPresent()) {
+
             FootPrintPicture footPrintPicture = new FootPrintPicture();
             FootPrint footPrint = footPrintOptional.get();
             footPrintPicture.setPictureUrl(pictureUrl);
             footPrintPicture.setLatitude(latitude);
             footPrintPicture.setLongitude(longitude);
             Set<FootPrintPicture> pictureSet = footPrint.getFootPrintPicture();
+            if (!footPrintOptional.get().getHavePicture()) {
+                pictureSet.clear();
+            }
             pictureSet.add(footPrintPicture);
             footPrint.setFootPrintPicture(pictureSet);
             footPrintRepository.save(footPrint);
